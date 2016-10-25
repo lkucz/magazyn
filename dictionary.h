@@ -36,8 +36,3 @@ private:
 };
 
 #endif // DICTIONARY_H
-
-//
-//
-//
-// #################

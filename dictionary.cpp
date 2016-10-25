@@ -102,7 +102,7 @@ void Dictionary::on_addButton_clicked()
 
 void Dictionary::on_deleteButton_clicked()
 {
-    ui->listView->s
+    ui->listView->selectionModel()->selectedIndexes();
 
 }
 
