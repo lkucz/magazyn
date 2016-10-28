@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>265</height>
+    <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,31 +56,37 @@
     </rect>
    </property>
    <property name="selectionMode">
-    <enum>QAbstractItemView::MultiSelection</enum>
+    <enum>QAbstractItemView::ExtendedSelection</enum>
    </property>
   </widget>
-  <widget class="QLineEdit" name="filterEdit">
+  <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>220</y>
-     <width>271</width>
-     <height>32</height>
+     <width>361</width>
+     <height>41</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QPushButton" name="clearFilterButton">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>220</y>
-     <width>88</width>
-     <height>34</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Wyczyść</string>
-   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Filtr:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLineEdit" name="filterEdit"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="clearFilterButton">
+      <property name="text">
+       <string>Wyczyść</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

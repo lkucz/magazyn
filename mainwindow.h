@@ -6,6 +6,7 @@
 #include <QSqlTableModel>
 
 #include "dictionary.h"
+#include "product.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,9 +22,27 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Dictionary *dict;
+    Product *productDef;
+
+    Dictionary *productDict;
+    Dictionary *typeDict;
+    Dictionary *materialDict;
+    Dictionary *finishDict;
+    Dictionary *colorDict;
+    Dictionary *unitDict;
+    Dictionary *documentDict;
 
     QSqlDatabase db;
+
+private slots:
+    void openProductDictWindow();
+    void openTypeDictWindow();
+    void openMaterialDictWindow();
+    void openFinishDictWindow();
+    void openColorDictWindow();
+    void openUnitDictWindow();
+    void openDocumentDictWindow();
+
 };
 
 #endif // MAINWINDOW_H

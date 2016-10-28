@@ -23,22 +23,180 @@
      <height>30</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuS_owniki">
+   <widget class="QMenu" name="menuDict">
     <property name="title">
      <string>Słow&amp;niki</string>
     </property>
-    <addaction name="actionKolor"/>
+    <addaction name="actionProduct"/>
+    <addaction name="actionType"/>
+    <addaction name="actionMaterials"/>
+    <addaction name="actionFinish"/>
+    <addaction name="actionColors"/>
+    <addaction name="actionUnits"/>
+    <addaction name="actionDocuments"/>
    </widget>
-   <addaction name="menuS_owniki"/>
+   <addaction name="menuDict"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionKolor">
+  <action name="actionType">
    <property name="text">
-    <string>Kolor</string>
+    <string>Typy</string>
+   </property>
+  </action>
+  <action name="actionMaterials">
+   <property name="text">
+    <string>Rodzaje materiałow</string>
+   </property>
+  </action>
+  <action name="actionFinish">
+   <property name="text">
+    <string>Rodzaje wykończenia</string>
+   </property>
+  </action>
+  <action name="actionColors">
+   <property name="text">
+    <string>Kolory</string>
+   </property>
+  </action>
+  <action name="actionUnits">
+   <property name="text">
+    <string>Jednostki</string>
+   </property>
+  </action>
+  <action name="actionDocuments">
+   <property name="text">
+    <string>Rodzaje dokumentów</string>
+   </property>
+  </action>
+  <action name="actionProduct">
+   <property name="text">
+    <string>Półprodukty</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionProduct</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openProductDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionType</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openTypeDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionMaterials</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openMaterialDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFinish</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openFinishDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionColors</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openColorDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDocuments</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openDocumentDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionUnits</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openUnitDictWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>openProductDictWindow()</slot>
+  <slot>openTypeDictWindow()</slot>
+  <slot>openMaterialDictWindow()</slot>
+  <slot>openFinishDictWindow()</slot>
+  <slot>openColorDictWindow()</slot>
+  <slot>openUnitDictWindow()</slot>
+  <slot>openDocumentDictWindow()</slot>
+ </slots>
 </ui>

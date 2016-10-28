@@ -14,13 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dictionary.cpp
+    dictionary.cpp \
+    product.cpp
 
 HEADERS  += mainwindow.h \
     dictionary.h \
-    settings.h
+    settings.h \
+    product.h
 
 FORMS    += mainwindow.ui \
-    dictionary.ui
+    dictionary.ui \
+    product.ui
 
 QTPLUGIN += QSQLMYSQL

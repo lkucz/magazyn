@@ -39,6 +39,12 @@ void Dictionary::setTable(const QString &tableName)
     }
 }
 
+void Dictionary::setWindowTitle(const QString &title)
+{
+    windowTitle = title;
+    QDialog::setWindowTitle(windowTitle);
+}
+
 void Dictionary::show()
 {
     if(tm)
@@ -95,15 +101,31 @@ void Dictionary::on_addButton_clicked()
 
         tm->setFilter("");  //Przywroc filter na domyslny
         tm->select();       //Zatwierdz zmiany
-
-
     }
 }
 
 void Dictionary::on_deleteButton_clicked()
 {
-    ui->listView->selectionModel()->selectedIndexes();
 
+    QMessageBox mb;
+    QModelIndexList list;
+
+    list = ui->listView->selectionModel()->selectedIndexes(); //Pobierz listę zaznaczonych elementow
+    if( list.empty() ) return; //Brak zaznaczenia
+
+    mb.setText("Czy napewno chcesz usunąć zaznaczone rekordy?");
+    mb.setIcon(QMessageBox::Question);
+    mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    mb.setDefaultButton(QMessageBox::No);
+
+    if( mb.exec() == QMessageBox::Yes )
+    {
+        foreach (const QModelIndex &index, list) {
+            tm->removeRow(index.row());
+        }
+    }
+
+    tm->select();
 }
 
 void Dictionary::on_closeButton_clicked()

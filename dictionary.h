@@ -20,6 +20,7 @@ public:
 
     void setDB(const QSqlDatabase &db);
     void setTable(const QString &tableName);
+    void setWindowTitle(const QString &title);
     void show();
 
 private slots:
@@ -33,6 +34,7 @@ private:
     Ui::Dictionary *ui;
     QSqlTableModel *tm;
     QString tableName;
+    QString windowTitle;
 };
 
 #endif // DICTIONARY_H
