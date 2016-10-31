@@ -1,0 +1,106 @@
+DROP TABLE products;
+
+DROP TABLE colorDict;
+DROP TABLE documentDict;
+DROP TABLE finishDict;
+DROP TABLE materialDict;
+DROP TABLE productDict;
+DROP TABLE typeDict;
+DROP TABLE unitDict;
+DROP TABLE stateDict;
+
+
+CREATE TABLE colorDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE documentDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE finishDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE materialDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE productDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE typeDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE unitDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+CREATE TABLE stateDict (
+    id int not null unique auto_increment primary key,
+    name varchar(255)
+);
+
+SET SESSION SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+INSERT INTO colorDict VALUES ('0', 'brak');
+INSERT INTO documentDict VALUES ('0', 'brak');
+INSERT INTO finishDict VALUES ('0', 'brak');
+INSERT INTO materialDict VALUES ('0', 'brak');
+INSERT INTO productDict VALUES ('0', 'brak');
+INSERT INTO typeDict VALUES ('0', 'brak');
+INSERT INTO unitDict VALUES ('0', 'brak');
+INSERT INTO stateDict VALUES ('0', 'brak');
+
+create table products (
+    id int not null auto_increment unique primary key,
+    name int not null,
+    type int not null,
+    material int not null,
+    finish int not null,
+    color int not null,
+    symbol varchar(255),
+    alarm_min int,
+    alarm_max int,
+    photo varchar(255),
+    comment varchar(255),
+    upw float,
+    foreign key (name) references productDict(id) ON DELETE CASCADE,
+    foreign key (type) references typeDict(id) ON DELETE CASCADE,
+    foreign key (material) references materialDict(id) ON DELETE CASCADE,
+    foreign key (finish) references finishDict(id) ON DELETE CASCADE,
+    foreign key (color) references colorDict(id) ON DELETE CASCADE
+    );
+
+
+CREATE VIEW products_view
+AS SELECT
+    products.id,
+    productDict.name AS name,
+    typeDict.name AS type,
+    materialDict.name AS material,
+    finishDict.name AS finish,
+    colorDict.name AS color,
+    products.symbol,
+    products.alarm_min,
+    products.alarm_max,
+    products.comment,
+    products.upw
+FROM products
+INNER JOIN productDict ON productDict.id = products.name
+INNER JOIN typeDict ON typeDict.id = products.type
+INNER JOIN materialDict ON materialDict.id = products.material
+INNER JOIN finishDict ON finishDict.id = products.finish
+INNER JOIN colorDict ON colorDict.id = products.color;
+
+
+
+
