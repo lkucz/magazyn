@@ -101,6 +101,27 @@ INNER JOIN materialDict ON materialDict.id = products.material
 INNER JOIN finishDict ON finishDict.id = products.finish
 INNER JOIN colorDict ON colorDict.id = products.color;
 
+CREATE VIEW pv
+AS SELECT
+    products.id,
+    concat(
+        IF(productDict.name='brak', '', productDict.name),
+        IF(typeDict.name='brak', '', typeDict.name),
+        IF(materialDict.name='brak', '', materialDict.name),
+        IF(finishDict.name='brak', '', finishDict.name),
+        IF(colorDict.name='brak', '', colorDict.name)
+    ) AS name,
+    products.symbol,
+    products.alarm_min,
+    products.alarm_max,
+    products.comment,
+    products.upw
+FROM products
+INNER JOIN productDict ON productDict.id = products.name
+INNER JOIN typeDict ON typeDict.id = products.type
+INNER JOIN materialDict ON materialDict.id = products.material
+INNER JOIN finishDict ON finishDict.id = products.finish
+INNER JOIN colorDict ON colorDict.id = products.color;
 
 
 
