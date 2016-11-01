@@ -1,3 +1,4 @@
+DROP VIEW products_view;
 DROP TABLE products;
 
 DROP TABLE colorDict;
@@ -51,14 +52,14 @@ CREATE TABLE stateDict (
 );
 
 SET SESSION SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-INSERT INTO colorDict VALUES ('0', 'brak');
-INSERT INTO documentDict VALUES ('0', 'brak');
-INSERT INTO finishDict VALUES ('0', 'brak');
-INSERT INTO materialDict VALUES ('0', 'brak');
-INSERT INTO productDict VALUES ('0', 'brak');
-INSERT INTO typeDict VALUES ('0', 'brak');
-INSERT INTO unitDict VALUES ('0', 'brak');
-INSERT INTO stateDict VALUES ('0', 'brak');
+INSERT INTO colorDict VALUES ('0', NULL);
+INSERT INTO documentDict VALUES ('0', NULL);
+INSERT INTO finishDict VALUES ('0', NULL);
+INSERT INTO materialDict VALUES ('0', NULL);
+INSERT INTO productDict VALUES ('0', NULL);
+INSERT INTO typeDict VALUES ('0', NULL);
+INSERT INTO unitDict VALUES ('0', NULL);
+INSERT INTO stateDict VALUES ('0', NULL);
 
 create table products (
     id int not null auto_increment unique primary key,
@@ -104,12 +105,12 @@ INNER JOIN colorDict ON colorDict.id = products.color;
 CREATE VIEW pv
 AS SELECT
     products.id,
-    concat(
-        IF(productDict.name='brak', '', productDict.name),
-        IF(typeDict.name='brak', '', typeDict.name),
-        IF(materialDict.name='brak', '', materialDict.name),
-        IF(finishDict.name='brak', '', finishDict.name),
-        IF(colorDict.name='brak', '', colorDict.name)
+    concat_ws(' ',
+        IF(productDict.name='brak', NULL, productDict.name),
+        IF(typeDict.name='brak', NULL, typeDict.name),
+        IF(materialDict.name='brak', NULL, materialDict.name),
+        IF(finishDict.name='brak', NULL, finishDict.name),
+        IF(colorDict.name='brak', NULL, colorDict.name)
     ) AS name,
     products.symbol,
     products.alarm_min,
@@ -124,4 +125,22 @@ INNER JOIN finishDict ON finishDict.id = products.finish
 INNER JOIN colorDict ON colorDict.id = products.color;
 
 
+CREATE VIEW pv
+AS SELECT
+    products.id,
+    concat_ws(' ',
+        productDict.name, typeDict.name, materialDict.name, 
+	finishDict.name, colorDict.name
+    ) AS name,
+    products.symbol,
+    products.alarm_min,
+    products.alarm_max,
+    products.comment,
+    products.upw
+FROM products
+INNER JOIN productDict ON productDict.id = products.name
+INNER JOIN typeDict ON typeDict.id = products.type
+INNER JOIN materialDict ON materialDict.id = products.material
+INNER JOIN finishDict ON finishDict.id = products.finish
+INNER JOIN colorDict ON colorDict.id = products.color;
 
