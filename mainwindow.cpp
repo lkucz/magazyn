@@ -62,6 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
     documentDict->setTable("documentDict");
     documentDict->setWindowTitle("Słownik rodzajów dokumentów");
 
+
+
 }
 
 MainWindow::~MainWindow()

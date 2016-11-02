@@ -59,7 +59,7 @@ void Dictionary::show()
 Dictionary::~Dictionary()
 {
     delete ui;
-    if(tm) delete tm;
+    if(tm) delete tm;   //Usun model danych
 }
 
 

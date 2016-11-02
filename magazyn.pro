@@ -15,15 +15,33 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dictionary.cpp \
-    product.cpp
+    product.cpp \
+    users.cpp \
+    workers.cpp \
+    documents.cpp \
+    production.cpp \
+    productlist.cpp
 
 HEADERS  += mainwindow.h \
     dictionary.h \
     settings.h \
-    product.h
+    product.h \
+    users.h \
+    workers.h \
+    documents.h \
+    production.h \
+    productlist.h
 
 FORMS    += mainwindow.ui \
     dictionary.ui \
-    product.ui
+    product.ui \
+    users.ui \
+    workers.ui \
+    documents.ui \
+    production.ui \
+    productlist.ui
 
 QTPLUGIN += QSQLMYSQL
+
+OTHER_FILES += \
+    DB.txt

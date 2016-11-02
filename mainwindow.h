@@ -7,6 +7,7 @@
 
 #include "dictionary.h"
 #include "product.h"
+#include "productlist.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,7 @@ public:
 private:
     Ui::MainWindow *ui;
     Product *productDef;
+    ProductList *productList;
 
     Dictionary *productDict;
     Dictionary *typeDict;
