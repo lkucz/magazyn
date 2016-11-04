@@ -85,7 +85,7 @@ create table products (
     foreign key (color) references colorDict(id) ON DELETE CASCADE
     );
 
-
+### Aktualnie nieuzywane, zastapione view z jedna nazwa ->> productsList
 CREATE VIEW products_view
 AS SELECT
     products.id,
@@ -106,6 +106,7 @@ INNER JOIN materialDict ON materialDict.id = products.material
 INNER JOIN finishDict ON finishDict.id = products.finish
 INNER JOIN colorDict ON colorDict.id = products.color;
 
+#### Aktualnie nieuzyweane ( w polu name musi byc wpis brak, zastapione przez NULL) ->> productsList
 CREATE VIEW pv
 AS SELECT
     products.id,
@@ -129,7 +130,7 @@ INNER JOIN finishDict ON finishDict.id = products.finish
 INNER JOIN colorDict ON colorDict.id = products.color;
 
 
-CREATE VIEW pv
+CREATE VIEW productsList
 AS SELECT
     products.id,
     concat_ws(' ',

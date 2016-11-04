@@ -31,9 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
     unitDict = new Dictionary(parent);
     documentDict = new Dictionary(parent);
 
-    productDef = new Product(parent);
-    productDef->show();
-
     productDict->setDB(db);
     productDict->setTable("productDict");
     productDict->setWindowTitle("Słownik półproduktów");
@@ -62,7 +59,16 @@ MainWindow::MainWindow(QWidget *parent) :
     documentDict->setTable("documentDict");
     documentDict->setWindowTitle("Słownik rodzajów dokumentów");
 
+    productList = new ProductList(parent);
+    productList->setDB(db);
+    productList->setWindowTitle("Słownik produktów");
+    productList->setTable("productsList");
+    productList->show();
 
+//    productDef = new Product(parent);
+//    productDef->setDB(db);
+//    productDef->setWindowTitle("Definicja produktu");
+//    productDef->show();
 
 }
 

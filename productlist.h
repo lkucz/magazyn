@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSqlTableModel>
 #include <QString>
+#include "product.h"
 
 namespace Ui {
 class ProductList;
@@ -22,11 +23,18 @@ public:
     void setWindowTitle(const QString &title);
     void show();
 
+private slots:
+    void on_addButton_clicked();
+
 private:
     Ui::ProductList *ui;
-    QSqlTableModel *tm;
+    Product *product;
+
     QString tableName;
     QString windowTitle;
+
+    QSqlTableModel *tm;
+
 };
 
 #endif // PRODUCTLIST_H

@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     workers.cpp \
     documents.cpp \
     production.cpp \
-    productlist.cpp
+    productlist.cpp \
+    settings.cpp
 
 HEADERS  += mainwindow.h \
     dictionary.h \

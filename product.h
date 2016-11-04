@@ -23,9 +23,13 @@ public:
 
 private:
     Ui::Product *ui;
-    QSqlTableModel *tm;
-    QString tableName;
     QString windowTitle;
+
+    QSqlTableModel *nameTableModel;
+    QSqlTableModel *typeTableModel;
+    QSqlTableModel *materialTableModel;
+    QSqlTableModel *finishTableModel;
+    QSqlTableModel *colorTableModel;
 };
 
 #endif // PRODUCT_H

@@ -6,12 +6,32 @@ Product::Product(QWidget *parent) :
     ui(new Ui::Product)
 {
     ui->setupUi(this);
+
+    nameTableModel = 0;
+    typeTableModel = 0;
+    materialTableModel = 0;
+    finishTableModel = 0;
+    colorTableModel = 0;
 }
 
 void Product::setDB(const QSqlDatabase &db)
 {
-    if(tm) delete tm;           //Usun wskaznik jezeli zostal wczesniej zainnicjalizowany
-    tm = new QSqlTableModel(0, db);
+    //Usun wskazniki jezeli zostaly wczesniej zainnicjalizowany
+
+    if(nameTableModel) delete nameTableModel;
+    if(typeTableModel) delete typeTableModel;
+    if(materialTableModel) delete materialTableModel;
+    if(finishTableModel) delete finishTableModel;
+    if(colorTableModel) delete colorTableModel;
+
+    nameTableModel = new QSqlTableModel(0, db);
+    typeTableModel = new QSqlTableModel(0, db);
+    materialTableModel = new QSqlTableModel(0, db);
+    finishTableModel = new QSqlTableModel(0, db);
+    colorTableModel = new QSqlTableModel(0, db);
+
+
+
 }
 
 void Product::setWindowTitle(const QString &title)
@@ -22,12 +42,12 @@ void Product::setWindowTitle(const QString &title)
 
 void Product::show()
 {
-//    if(tm)
-//    {
-//        tm->select();    //Wykonaj zapytanie przed otwqarciem okna
-//        ui->listView->setModel(tm);
-//        ui->listView->setModelColumn(1);
-//    }
+    //    if(tm)
+    //    {
+    //        tm->select();    //Wykonaj zapytanie przed otwqarciem okna
+    //        ui->listView->setModel(tm);
+    //        ui->listView->setModelColumn(1);
+    //    }
     QDialog::show();
 }
 

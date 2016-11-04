@@ -13,7 +13,8 @@ ProductList::ProductList(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ProductList)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
+    product = new Product(parent);
 
     tm = 0;     //Zeruj wskaznik do modelu danych
 }
@@ -22,6 +23,7 @@ void ProductList::setDB(const QSqlDatabase &db)
 {
     if(tm) delete tm;           //Usun wskaznik jezeli zostal wczesniej zainnicjalizowany
     tm = new QSqlTableModel(0, db);
+    product->setDB(db);
 }
 
 void ProductList::setTable(const QString &tableName)
@@ -33,10 +35,6 @@ void ProductList::setTable(const QString &tableName)
         tm->setTable(tableName);
         tm->setEditStrategy(QSqlTableModel::OnManualSubmit);
         tm->setSort(0, Qt::AscendingOrder);
-
-        tm->setHeaderData(0, Qt::Horizontal, tr("id"));
-        tm->setHeaderData(1, Qt::Horizontal, tr("name"));
-
         tm->select();
     }
 }
@@ -53,9 +51,6 @@ void ProductList::show()
     {
         tm->select();    //Wykonaj zapytanie przed otwqarciem okna
         ui->tableView->setModel(tm);
-
-
-        //ui->listView->setModelColumn(1);
     }
     QDialog::show();
 }
@@ -64,4 +59,10 @@ ProductList::~ProductList()
 {
     delete ui;
     if(tm) delete tm;    //Usun model danych
+}
+
+void ProductList::on_addButton_clicked()
+{
+    product->show();
+
 }
