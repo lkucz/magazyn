@@ -1,8 +1,11 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#define DEBUG_VIEW  1
 
+class Settings
+{
+public:
+    Settings();
+};
 
 #endif // SETTINGS_H
-
