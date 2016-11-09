@@ -175,6 +175,13 @@ CREATE TABLE user (
 	password VARCHAR(255)
 );
 
+CREATE VIEW worker_view
+AS SELECT
+    concat_ws(' ', name, surname) AS name,
+    concat_ws(' ', address, city) AS address,
+    phone
+FROM worker;
+
 CREATE TABLE worker (
 	id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
 	name VARCHAR(255), 

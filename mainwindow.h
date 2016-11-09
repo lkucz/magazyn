@@ -5,6 +5,8 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 
+#include "users.h"
+#include "workers.h"
 #include "dictionary.h"
 #include "product.h"
 #include "productlist.h"
@@ -36,6 +38,9 @@ private:
 
     QSqlDatabase db;
 
+    Users *users;
+    Workers *workers;
+
 private slots:
     void openProductDictWindow();
     void openTypeDictWindow();
@@ -44,7 +49,8 @@ private slots:
     void openColorDictWindow();
     void openUnitDictWindow();
     void openDocumentDictWindow();
-
+    void openUsersWindow();
+    void openWorkersWindow();
 };
 
 #endif // MAINWINDOW_H

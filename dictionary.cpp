@@ -14,7 +14,6 @@ Dictionary::Dictionary(QWidget *parent) :
     ui(new Ui::Dictionary)
 {
     ui->setupUi(this);
-
     tm = 0;     //Zeruj wskaznik do modelu danych
 }
 
@@ -143,4 +142,3 @@ void Dictionary::on_filterEdit_textChanged(const QString &filter)
     tm->setFilter("name like '" + filter + "%'");
     tm->select();
 }
-

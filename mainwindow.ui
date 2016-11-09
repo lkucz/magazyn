@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>30</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDict">
@@ -35,7 +35,15 @@
     <addaction name="actionUnits"/>
     <addaction name="actionDocuments"/>
    </widget>
+   <widget class="QMenu" name="menuTmp">
+    <property name="title">
+     <string>tmp</string>
+    </property>
+    <addaction name="actionUsers"/>
+    <addaction name="actionWorkers"/>
+   </widget>
    <addaction name="menuDict"/>
+   <addaction name="menuTmp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionType">
@@ -71,6 +79,16 @@
   <action name="actionProduct">
    <property name="text">
     <string>Półprodukty</string>
+   </property>
+  </action>
+  <action name="actionUsers">
+   <property name="text">
+    <string>Użytkownicy systemu</string>
+   </property>
+  </action>
+  <action name="actionWorkers">
+   <property name="text">
+    <string>Procownicy</string>
    </property>
   </action>
  </widget>
@@ -189,6 +207,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionUsers</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openUsersWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWorkers</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openWorkersWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openProductDictWindow()</slot>
@@ -198,5 +248,7 @@
   <slot>openColorDictWindow()</slot>
   <slot>openUnitDictWindow()</slot>
   <slot>openDocumentDictWindow()</slot>
+  <slot>openUsersWindow()</slot>
+  <slot>openWorkersWindow()</slot>
  </slots>
 </ui>

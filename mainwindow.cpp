@@ -65,15 +65,20 @@ MainWindow::MainWindow(QWidget *parent) :
     productList->setTable("productsList");
     productList->show();
 
-//    productDef = new Product(parent);
-//    productDef->setDB(db);
-//    productDef->setWindowTitle("Definicja produktu");
-//    productDef->show();
+    //    productDef = new Product(parent);
+    //    productDef->setDB(db);
+    //    productDef->setWindowTitle("Definicja produktu");
+    //    productDef->show();
 
+    users = 0;      //Nie inicjalizuj nowego okna users do momentu, kiedy nie bedzie potrzebne
+    workers = 0;
 }
 
 MainWindow::~MainWindow()
 {
+    if(users) delete users;
+    if(workers) delete workers;
+
     delete ui;
 }
 
@@ -110,5 +115,27 @@ void MainWindow::openUnitDictWindow()
 void MainWindow::openDocumentDictWindow()
 {
     documentDict->show();
+}
+
+void MainWindow::openUsersWindow()
+{
+    if(!users){
+        users = new Users(this);
+        users->setDB(db);
+        users->setTable("user");
+        users->setWindowTitle("Użytkownicy systemu");
+    }
+    users->show();
+}
+
+void MainWindow::openWorkersWindow()
+{
+    if(!workers){
+        workers = new Workers(this);
+        workers->setDB(db);
+        workers->setTable("worker_view");
+        workers->setWindowTitle("Lista pracowników");
+    }
+    workers->show();
 }
 
