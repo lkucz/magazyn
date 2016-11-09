@@ -1,5 +1,6 @@
 #include "product.h"
 #include "ui_product.h"
+#include "settings.h"
 
 Product::Product(QWidget *parent) :
     QDialog(parent),
@@ -30,8 +31,7 @@ void Product::setDB(const QSqlDatabase &db)
     finishTableModel = new QSqlTableModel(0, db);
     colorTableModel = new QSqlTableModel(0, db);
 
-
-
+    nameTableModel->setTable();
 }
 
 void Product::setWindowTitle(const QString &title)
