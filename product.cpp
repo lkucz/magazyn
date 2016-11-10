@@ -31,7 +31,7 @@ void Product::setDB(const QSqlDatabase &db)
     finishTableModel = new QSqlTableModel(0, db);
     colorTableModel = new QSqlTableModel(0, db);
 
-    nameTableModel->setTable();
+    //nameTableModel->setTable();
 }
 
 void Product::setWindowTitle(const QString &title)

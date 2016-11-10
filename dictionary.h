@@ -5,7 +5,6 @@
 #include <QSqlTableModel>
 #include <QString>
 
-
 namespace Ui {
 class Dictionary;
 }
@@ -29,6 +28,8 @@ private slots:
     void on_closeButton_clicked();
     void on_clearFilterButton_clicked();
     void on_filterEdit_textChanged(const QString &);
+
+    void on_listView_doubleClicked(const QModelIndex &);
 
 private:
     Ui::Dictionary *ui;
