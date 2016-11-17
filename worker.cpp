@@ -1,4 +1,6 @@
 #include <QSqlRecord>
+#include <QMessageBox>
+#include <QDebug>
 #include "worker.h"
 #include "ui_worker.h"
 
@@ -12,8 +14,8 @@ Worker::Worker(QWidget *parent) :
 
 Worker::~Worker()
 {
-    delete ui;
     if(tm) delete tm;
+    delete ui;
 }
 
 void Worker::setDB(const QSqlDatabase &db)
@@ -26,6 +28,7 @@ void Worker::setTable(const QString &tableName)
 {
     if(tm)
     {
+        this->tableName = tableName;
         tm->setTable(tableName);
         tm->setEditStrategy(QSqlTableModel::OnFieldChange);
         tm->select();
@@ -51,6 +54,15 @@ void Worker::accept()
     newRecord.setValue("phone", QVariant(ui->phoneLineEdit->text()));
     //    newRecord.setValue("comment", QVariant(ui->commentTextEdit->text()));
 
+    if(tm->insertRecord(-1, newRecord) != true)
+    {
+        qDebug() << "Nie moge dodac rekordu do bazy danych: tabela(" << tableName << ")";
+
+        QMessageBox mb;
+        mb.setText("Nie moge dodac nowego rekordu do bazy danych " + tableName);
+        mb.exec();
+        mb.setIcon(QMessageBox::Critical);
+    }
 
     this->hide();
 }

@@ -65,35 +65,38 @@ void Workers::show()
 
 void Workers::on_addButton_clicked()
 {
-        if(!worker) worker = new Worker(this);
+    if(!worker){
+        worker = new Worker(this);
         worker->setDB(this->db);
         worker->setTable("worker");
-        worker->show();
+    }
 
+    worker->show();
 }
 
 void Workers::on_deleteButton_clicked()
 {
+    QMessageBox mb;
+    QModelIndexList list;
 
-    //    QMessageBox mb;
-    //    QModelIndexList list;
+    list = ui->tableView->selectionModel()->selectedIndexes(); //Pobierz listę zaznaczonych elementow
 
-    //    list = ui->listView->selectionModel()->selectedIndexes(); //Pobierz listę zaznaczonych elementow
-    //    if( list.empty() ) return; //Brak zaznaczenia
+    if( list.empty() ) return; //Brak zaznaczenia
 
-    //    mb.setText("Czy napewno chcesz usunąć zaznaczone rekordy?");
-    //    mb.setIcon(QMessageBox::Question);
-    //    mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    //    mb.setDefaultButton(QMessageBox::No);
+    mb.setText("Czy napewno chcesz usunąć zaznaczone rekordy?");
+    mb.setIcon(QMessageBox::Question);
+    mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    mb.setDefaultButton(QMessageBox::No);
 
-    //    if( mb.exec() == QMessageBox::Yes )
-    //    {
-    //        foreach (const QModelIndex &index, list) {
-    //            tm->removeRow(index.row());
-    //        }
-    //    }
+    if( mb.exec() == QMessageBox::Yes )
+    {
+        foreach (const QModelIndex &index, list) {
+            tm->removeRow(index.row());
+        }
+    }
 
-    //    tm->select();
+    tm->submitAll();
+    tm->select();
 }
 
 void Workers::on_closeButton_clicked()

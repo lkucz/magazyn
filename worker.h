@@ -29,6 +29,7 @@ private:
     Ui::Worker *ui;
     QSqlTableModel *tm;
     QString windowTitle;
+    QString tableName;
 };
 
 #endif // WORKER_H
