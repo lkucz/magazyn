@@ -27,6 +27,7 @@ private slots:
 
 private:
     Ui::Worker *ui;
+
     QSqlTableModel *tm;
     QString windowTitle;
     QString tableName;

@@ -5,15 +5,20 @@
 
 class Settings
 {
-
-
-
+private:
 
 public:
     Settings();
 
-    QString colorDictTableName();
-    QString documentDictTableName();
+    static QString colorDictTableName();
+    static QString documentDictTableName();
+    static QString finishDictTableName();
+    static QString materialDictTableName();
+    static QString productDictTableName();
+    static QString typeDictTableName();
+    static QString unitDictTableName();
+    static QString stateDictTableName();
+    static QString productTableName();
 };
 
 #endif // SETTINGS_H

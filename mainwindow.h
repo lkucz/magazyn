@@ -26,20 +26,21 @@ public:
 private:
     Ui::MainWindow *ui;
     Product *productDef;
-    ProductList *productList;
 
-    Dictionary *productDict;
-    Dictionary *typeDict;
-    Dictionary *materialDict;
-    Dictionary *finishDict;
-    Dictionary *colorDict;
-    Dictionary *unitDict;
-    Dictionary *documentDict;
+    Dictionary *productDictWindow;
+    Dictionary *typeDictWindow;
+    Dictionary *materialDictWindow;
+    Dictionary *finishDictWindow;
+    Dictionary *colorDictWindow;
+    Dictionary *unitDictWindow;
+    Dictionary *documentDictWindow;
 
     QSqlDatabase db;
 
-    Users *users;
-    Workers *workers;
+    Users *usersWindow;
+    Workers *workersWindow;
+    ProductList *productListWindow;
+
 
 private slots:
     void openProductDictWindow();
@@ -51,6 +52,7 @@ private slots:
     void openDocumentDictWindow();
     void openUsersWindow();
     void openWorkersWindow();
+    void openProductListWindow();
 };
 
 #endif // MAINWINDOW_H

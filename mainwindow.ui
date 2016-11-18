@@ -20,13 +20,14 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>20</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDict">
     <property name="title">
      <string>Słow&amp;niki</string>
     </property>
+    <addaction name="actionProductList"/>
     <addaction name="actionProduct"/>
     <addaction name="actionType"/>
     <addaction name="actionMaterials"/>
@@ -37,7 +38,7 @@
    </widget>
    <widget class="QMenu" name="menuTmp">
     <property name="title">
-     <string>tmp</string>
+     <string>t&amp;mp</string>
     </property>
     <addaction name="actionUsers"/>
     <addaction name="actionWorkers"/>
@@ -48,47 +49,52 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionType">
    <property name="text">
-    <string>Typy</string>
+    <string>&amp;Typy</string>
    </property>
   </action>
   <action name="actionMaterials">
    <property name="text">
-    <string>Rodzaje materiałow</string>
+    <string>&amp;Rodzaje materiałow</string>
    </property>
   </action>
   <action name="actionFinish">
    <property name="text">
-    <string>Rodzaje wykończenia</string>
+    <string>Rodzaje &amp;wykończenia</string>
    </property>
   </action>
   <action name="actionColors">
    <property name="text">
-    <string>Kolory</string>
+    <string>&amp;Kolory</string>
    </property>
   </action>
   <action name="actionUnits">
    <property name="text">
-    <string>Jednostki</string>
+    <string>&amp;Jednostki</string>
    </property>
   </action>
   <action name="actionDocuments">
    <property name="text">
-    <string>Rodzaje dokumentów</string>
+    <string>Rodzaje &amp;dokumentów</string>
    </property>
   </action>
   <action name="actionProduct">
    <property name="text">
-    <string>Półprodukty</string>
+    <string>&amp;Półprodukty</string>
    </property>
   </action>
   <action name="actionUsers">
    <property name="text">
-    <string>Użytkownicy systemu</string>
+    <string>&amp;Użytkownicy systemu</string>
    </property>
   </action>
   <action name="actionWorkers">
    <property name="text">
-    <string>Procownicy</string>
+    <string>&amp;Procownicy</string>
+   </property>
+  </action>
+  <action name="actionProductList">
+   <property name="text">
+    <string>Produkty</string>
    </property>
   </action>
  </widget>
@@ -239,6 +245,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionProductList</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openProductListWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openProductDictWindow()</slot>
@@ -250,5 +272,6 @@
   <slot>openDocumentDictWindow()</slot>
   <slot>openUsersWindow()</slot>
   <slot>openWorkersWindow()</slot>
+  <slot>openProductListWindow()</slot>
  </slots>
 </ui>

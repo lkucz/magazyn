@@ -33,12 +33,13 @@ private slots:
 
 private:
     Ui::Workers *ui;
+
     QSqlTableModel *tm;
     QString tableName;
     QString windowTitle;
     QSqlDatabase db;
 
-    Worker *worker;
+    Worker *workerWindow;
 };
 
 #endif // WORKERS_H

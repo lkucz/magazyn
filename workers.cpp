@@ -16,7 +16,7 @@ Workers::Workers(QWidget *parent) :
     ui->setupUi(this);
 
     tm = 0;     //Zeruj wskaznik do obiektów
-    worker = 0;
+    workerWindow = 0;
 }
 
 Workers::~Workers()
@@ -24,7 +24,7 @@ Workers::~Workers()
     delete ui;
 
     if(tm) delete tm;   //Usun zaalokowane obiekty
-    if(worker) delete worker;
+    if(workerWindow) delete workerWindow;
 }
 
 void Workers::setDB(const QSqlDatabase &db)
@@ -65,13 +65,13 @@ void Workers::show()
 
 void Workers::on_addButton_clicked()
 {
-    if(!worker){
-        worker = new Worker(this);
-        worker->setDB(this->db);
-        worker->setTable("worker");
+    if(!workerWindow){
+        workerWindow = new Worker(this);
+        workerWindow->setDB(this->db);
+        workerWindow->setTable("worker");
     }
 
-    worker->show();
+    workerWindow->show();
 }
 
 void Workers::on_deleteButton_clicked()

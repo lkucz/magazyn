@@ -21,6 +21,10 @@ public:
     void setWindowTitle(const QString &title);
     void show();
 
+private slots:
+    void accept();
+    void reject();
+
 private:
     Ui::Product *ui;
     QString windowTitle;
@@ -30,6 +34,8 @@ private:
     QSqlTableModel *materialTableModel;
     QSqlTableModel *finishTableModel;
     QSqlTableModel *colorTableModel;
+
+    QSqlTableModel *productTableModel;
 };
 
 #endif // PRODUCT_H

@@ -25,16 +25,17 @@ public:
 
 private slots:
     void on_addButton_clicked();
+    void on_deleteButton_clicked();
 
 private:
     Ui::ProductList *ui;
-    Product *product;
-
-    QString tableName;
-    QString windowTitle;
 
     QSqlTableModel *tm;
+    QString tableName;
+    QString windowTitle;
+    QSqlDatabase db;
 
+    Product *productWindow;
 };
 
 #endif // PRODUCTLIST_H

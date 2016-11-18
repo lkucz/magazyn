@@ -23,119 +23,146 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    productDict = new Dictionary(parent);
-    typeDict = new Dictionary(parent);
-    materialDict = new Dictionary(parent);
-    finishDict = new Dictionary(parent);
-    colorDict = new Dictionary(parent);
-    unitDict = new Dictionary(parent);
-    documentDict = new Dictionary(parent);
+    // Nie inicjalizuj nowego okna users do momentu, kiedy nie bedzie potrzebne
+    // zerowanie wskaźników do obiektów okien
+    productDictWindow = 0;
+    typeDictWindow = 0;
+    materialDictWindow = 0;
+    finishDictWindow = 0;
+    colorDictWindow = 0;
+    unitDictWindow = 0;
+    documentDictWindow = 0;
 
-    productDict->setDB(db);
-    productDict->setTable("productDict");
-    productDict->setWindowTitle("Słownik półproduktów");
-
-    typeDict->setDB(db);
-    typeDict->setTable("typeDict");
-    typeDict->setWindowTitle("Słownik typów");
-
-    materialDict->setDB(db);
-    materialDict->setTable("materialDict");
-    materialDict->setWindowTitle("Słownik materiałów");
-
-    finishDict->setDB(db);
-    finishDict->setTable("finishDict");
-    finishDict->setWindowTitle("Słownik rodzajów wykończenia");
-
-    colorDict->setDB(db);
-    colorDict->setTable("colorDict");
-    colorDict->setWindowTitle("Słownik kolorów");
-
-    unitDict->setDB(db);
-    unitDict->setTable("unitDict");
-    unitDict->setWindowTitle("Słownik jednostek");
-
-    documentDict->setDB(db);
-    documentDict->setTable("documentDict");
-    documentDict->setWindowTitle("Słownik rodzajów dokumentów");
-
-    productList = new ProductList(parent);
-    productList->setDB(db);
-    productList->setWindowTitle("Słownik produktów");
-    productList->setTable("productsList");
-    productList->show();
-
-    //    productDef = new Product(parent);
-    //    productDef->setDB(db);
-    //    productDef->setWindowTitle("Definicja produktu");
-    //    productDef->show();
-
-    users = 0;      //Nie inicjalizuj nowego okna users do momentu, kiedy nie bedzie potrzebne
-    workers = 0;
+    usersWindow = 0;
+    workersWindow = 0;
+    productListWindow = 0;
 }
 
 MainWindow::~MainWindow()
 {
-    if(users) delete users;
-    if(workers) delete workers;
+    if(productDictWindow) delete productDictWindow;
+    if(typeDictWindow) delete productDictWindow;
+    if(materialDictWindow) delete materialDictWindow;
+    if(finishDictWindow) delete finishDictWindow;
+    if(colorDictWindow) delete colorDictWindow;
+    if(unitDictWindow) delete unitDictWindow;
+    if(documentDictWindow) delete documentDictWindow;
+
+    if(usersWindow) delete usersWindow;
+    if(workersWindow) delete workersWindow;
+    if(productListWindow) delete productListWindow;
 
     delete ui;
 }
 
 void MainWindow::openProductDictWindow()
 {
-    productDict->show();
+    if(!productDictWindow){
+        productDictWindow = new Dictionary(this);
+        productDictWindow->setDB(db);
+        productDictWindow->setTable("productDict");
+        productDictWindow->setWindowTitle("Słownik półproduktów");
+    }
+    productDictWindow->show();
 }
 
 void MainWindow::openTypeDictWindow()
 {
-    typeDict->show();
+    if(!typeDictWindow){
+        typeDictWindow = new Dictionary(this);
+        typeDictWindow->setDB(db);
+        typeDictWindow->setTable("typeDict");
+        typeDictWindow->setWindowTitle("Słownik typów");
+    }
+    typeDictWindow->show();
 }
 
 void MainWindow::openMaterialDictWindow()
 {
-    materialDict->show();
+    if(!materialDictWindow){
+        materialDictWindow = new Dictionary(this);
+        materialDictWindow->setDB(db);
+        materialDictWindow->setTable("materialDict");
+        materialDictWindow->setWindowTitle("Słownik materiałów");
+    }
+    materialDictWindow->show();
 }
 
 void MainWindow::openFinishDictWindow()
 {
-    finishDict->show();
+    if(!finishDictWindow){
+        finishDictWindow = new Dictionary(this);
+        finishDictWindow->setDB(db);
+        finishDictWindow->setTable("finishDict");
+        finishDictWindow->setWindowTitle("Słownik rodzajów wykończenia");
+    }
+    finishDictWindow->show();
 }
 
 void MainWindow::openColorDictWindow()
 {
-    colorDict->show();
+    if(!colorDictWindow){
+        colorDictWindow = new Dictionary(this);
+        colorDictWindow->setDB(db);
+        colorDictWindow->setTable("colorDict");
+        colorDictWindow->setWindowTitle("Słownik kolorów");
+    }
+    colorDictWindow->show();
 }
 
 void MainWindow::openUnitDictWindow()
 {
-    unitDict->show();
+    if(!unitDictWindow){
+        unitDictWindow = new Dictionary(this);
+        unitDictWindow->setDB(db);
+        unitDictWindow->setTable("unitDict");
+        unitDictWindow->setWindowTitle("Słownik jednostek");
+    }
+    unitDictWindow->show();
 }
 
 void MainWindow::openDocumentDictWindow()
 {
-    documentDict->show();
+    if(!documentDictWindow){
+        documentDictWindow = new Dictionary(this);
+        documentDictWindow->setDB(db);
+        documentDictWindow->setTable("documentDict");
+        documentDictWindow->setWindowTitle("Słownik rodzajów dokumentów");
+    }
+    documentDictWindow->show();
 }
 
 void MainWindow::openUsersWindow()
 {
-    if(!users){
-        users = new Users(this);
-        users->setDB(db);
-        users->setTable("user");
-        users->setWindowTitle("Użytkownicy systemu");
+    if(!usersWindow){
+        usersWindow = new Users(this);
+        usersWindow->setDB(db);
+        usersWindow->setTable("user");
+        usersWindow->setWindowTitle("Użytkownicy systemu");
     }
-    users->show();
+    usersWindow->show();
 }
 
 void MainWindow::openWorkersWindow()
 {
-    if(!workers){
-        workers = new Workers(this);
-        workers->setDB(db);
-        workers->setTable("worker_view");
-        workers->setWindowTitle("Lista pracowników");
+    if(!workersWindow){
+        workersWindow = new Workers(this);
+        workersWindow->setDB(db);
+        workersWindow->setTable("worker_view");
+        workersWindow->setWindowTitle("Lista pracowników");
     }
-    workers->show();
+    workersWindow->show();
 }
+
+void MainWindow::openProductListWindow()
+{
+    if(!productListWindow){
+        productListWindow = new ProductList(this);
+        productListWindow->setDB(db);
+        productListWindow->setWindowTitle("Słownik produktów");
+        productListWindow->setTable("productsList");
+    }
+    productListWindow->show();
+}
+
 
