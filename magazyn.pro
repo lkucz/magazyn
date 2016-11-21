@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     productlist.cpp \
     settings.cpp \
     user.cpp \
-    worker.cpp
+    worker.cpp \
+    preparework.cpp
 
 HEADERS  += mainwindow.h \
     dictionary.h \
@@ -35,7 +36,8 @@ HEADERS  += mainwindow.h \
     production.h \
     productlist.h \
     user.h \
-    worker.h
+    worker.h \
+    preparework.h
 
 FORMS    += mainwindow.ui \
     dictionary.ui \
@@ -46,7 +48,8 @@ FORMS    += mainwindow.ui \
     production.ui \
     productlist.ui \
     user.ui \
-    worker.ui
+    worker.ui \
+    preparework.ui
 
 QTPLUGIN += QSQLMYSQL
 
