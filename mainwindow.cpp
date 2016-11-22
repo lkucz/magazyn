@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     ui->setupUi(this);
+    this->setWindowTitle("Magazyn");
 
     // Nie inicjalizuj nowego okna users do momentu, kiedy nie bedzie potrzebne
     // zerowanie wskaźników do obiektów okien
@@ -37,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     workersWindow = 0;
     productListWindow = 0;
     prepareWorkWindow = 0;
+    addToStoreWindow = 0;
 }
 
 MainWindow::~MainWindow()
@@ -53,6 +55,7 @@ MainWindow::~MainWindow()
     if(workersWindow) delete workersWindow;
     if(productListWindow) delete productListWindow;
     if(prepareWorkWindow) delete prepareWorkWindow;
+    if(addToStoreWindow) delete addToStoreWindow;
 
     delete ui;
 }
@@ -177,3 +180,13 @@ void MainWindow::openPrepareWorkWindow()
 
 }
 
+void MainWindow::openAddToStoreWindow()
+{
+    if(!addToStoreWindow){
+        addToStoreWindow = new AddToStore(this);
+        addToStoreWindow->setDB(db);
+        addToStoreWindow->setWindowTitle("Wprowadź produkty na magazyn");
+    }
+    addToStoreWindow->show();
+
+}

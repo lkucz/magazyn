@@ -52,9 +52,22 @@
     <addaction name="actionTakeWork"/>
     <addaction name="actionLista_prac"/>
    </widget>
+   <widget class="QMenu" name="menuMagazyn">
+    <property name="title">
+     <string>Ma&amp;gazyn</string>
+    </property>
+    <addaction name="actionAddToStore"/>
+   </widget>
+   <widget class="QMenu" name="menuDokumenty">
+    <property name="title">
+     <string>Do&amp;kumenty</string>
+    </property>
+   </widget>
    <addaction name="menuDict"/>
    <addaction name="menuTmp"/>
    <addaction name="menuPraca"/>
+   <addaction name="menuMagazyn"/>
+   <addaction name="menuDokumenty"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionType">
@@ -104,27 +117,32 @@
   </action>
   <action name="actionProductList">
    <property name="text">
-    <string>Produkty</string>
+    <string>Pr&amp;odukty</string>
    </property>
   </action>
   <action name="actionPrepareWork">
    <property name="text">
-    <string>Przygotuj pracę</string>
+    <string>&amp;Przygotuj pracę</string>
    </property>
   </action>
   <action name="actionGiveWork">
    <property name="text">
-    <string>Wydaj pracę</string>
+    <string>&amp;Wydaj pracę</string>
    </property>
   </action>
   <action name="actionTakeWork">
    <property name="text">
-    <string>Odbierz pracę</string>
+    <string>&amp;Odbierz pracę</string>
    </property>
   </action>
   <action name="actionLista_prac">
    <property name="text">
-    <string>Lista prac</string>
+    <string>&amp;Lista prac</string>
+   </property>
+  </action>
+  <action name="actionAddToStore">
+   <property name="text">
+    <string>Przyjmij na magazyn</string>
    </property>
   </action>
  </widget>
@@ -307,6 +325,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAddToStore</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openAddToStoreWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openProductDictWindow()</slot>
@@ -320,5 +354,6 @@
   <slot>openWorkersWindow()</slot>
   <slot>openProductListWindow()</slot>
   <slot>openPrepareWorkWindow()</slot>
+  <slot>openAddToStoreWindow()</slot>
  </slots>
 </ui>

@@ -1,7 +1,9 @@
+#include <QMessageBox>
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QDebug>
 #include <QList>
+#include <QMap>
 #include "productlist.h"
 #include "preparework.h"
 #include "settings.h"
@@ -84,7 +86,42 @@ void PrepareWork::addProduct()
 
 void PrepareWork::deleteProduct()
 {
+    QMessageBox mb;
+    QModelIndexList list;
 
+    list = ui->productList->selectionModel()->selectedIndexes(); //Pobierz listę zaznaczonych elementow
+    if( list.empty() ) return; //Brak zaznaczenia
+
+    mb.setText("Czy napewno chcesz usunąć zaznaczone rekordy?");
+    mb.setIcon(QMessageBox::Question);
+    mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    mb.setDefaultButton(QMessageBox::No);
+
+    if( mb.exec() == QMessageBox::Yes )
+    {
+        // Wyszukaj numerow rzedow, ktore nalezy usunac
+        // utworz hashmap, wybierz unikalne klucze
+        QMap<int, int> map;
+        QList<int> row;
+
+        foreach (const QModelIndex &index, list) {
+            map.insert(index.row(), index.row());
+        }
+
+        row = map.uniqueKeys();     // wybierz unikalne klucze
+        qSort(row);                 // sortuj
+
+        QListIterator<int> i(row);  // utworz liste
+        i.toBack();                 // ustaw iterator na koniec
+
+        // usun elementy od konca
+        while(i.hasPrevious())
+        {
+            int r = i.previous();
+            tableModel->removeRow(r);
+            products.removeAt(r);
+        }
+    }
 }
 
 void PrepareWork::dataSelected(QModelIndexList list)
@@ -106,11 +143,14 @@ void PrepareWork::dataSelected(QModelIndexList list)
 
 void PrepareWork::accept()
 {
-    foreach (QModelIndexList list, products) {
-       qDebug()<< list[1];
+    QListIterator<QModelIndexList> i(products);
+    while(i.hasNext())
+    {
+        foreach (const QModelIndex &index, i.next()) {
+            qDebug()<<index.data();
+        }
     }
-
-    this->hide();
+  //  this->hide();
 }
 
 void PrepareWork::reject()

@@ -1,5 +1,5 @@
-#ifndef PREPAREWORK_H
-#define PREPAREWORK_H
+#ifndef ADDTOSTORE_H
+#define ADDTOSTORE_H
 
 #include <QStandardItemModel>
 #include <QDialog>
@@ -7,29 +7,30 @@
 #include <QString>
 #include <QModelIndex>
 #include <QList>
+#include "settings.h"
 #include "productlist.h"
 
 namespace Ui {
-class PrepareWork;
+class AddToStore;
 }
 
-class PrepareWork : public QDialog
+class AddToStore : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PrepareWork(QWidget *parent = 0);
-    ~PrepareWork();
+    explicit AddToStore(QWidget *parent = 0);
+    ~AddToStore();
 
     void setDB(const QSqlDatabase &db);
     void show();
 
 private:
-    Ui::PrepareWork *ui;
+    Ui::AddToStore *ui;
 
-    QSqlTableModel *productList;
     QSqlDatabase db;
-    QStandardItemModel *tableModel;
+    QStandardItemModel *productListTableModel;
+    QSqlTableModel *docTypeTableModel;
     QList<QModelIndexList> products;
 
     ProductList *productListWindow;
@@ -40,7 +41,6 @@ private slots:
     void dataSelected(QModelIndexList );
     void accept();
     void reject();
-
 };
 
-#endif // PREPAREWORK_H
+#endif // ADDTOSTORE_H
