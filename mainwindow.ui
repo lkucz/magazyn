@@ -47,9 +47,9 @@
     <property name="title">
      <string>Praca</string>
     </property>
-    <addaction name="actionPrzygotuj_prac"/>
-    <addaction name="actionWydaj_prac"/>
-    <addaction name="actionOdbierz_prac"/>
+    <addaction name="actionPrepareWork"/>
+    <addaction name="actionGiveWork"/>
+    <addaction name="actionTakeWork"/>
     <addaction name="actionLista_prac"/>
    </widget>
    <addaction name="menuDict"/>
@@ -107,17 +107,17 @@
     <string>Produkty</string>
    </property>
   </action>
-  <action name="actionPrzygotuj_prac">
+  <action name="actionPrepareWork">
    <property name="text">
     <string>Przygotuj pracę</string>
    </property>
   </action>
-  <action name="actionWydaj_prac">
+  <action name="actionGiveWork">
    <property name="text">
     <string>Wydaj pracę</string>
    </property>
   </action>
-  <action name="actionOdbierz_prac">
+  <action name="actionTakeWork">
    <property name="text">
     <string>Odbierz pracę</string>
    </property>
@@ -291,6 +291,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPrepareWork</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openPrepareWorkWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openProductDictWindow()</slot>
@@ -303,5 +319,6 @@
   <slot>openUsersWindow()</slot>
   <slot>openWorkersWindow()</slot>
   <slot>openProductListWindow()</slot>
+  <slot>openPrepareWorkWindow()</slot>
  </slots>
 </ui>

@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>450</y>
+     <y>460</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -44,7 +44,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="addButton">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -57,7 +57,7 @@
      <string>Dodaj</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="deleteButton">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -70,7 +70,7 @@
      <string>Usuń</string>
     </property>
    </widget>
-   <widget class="QTableView" name="tableView">
+   <widget class="QTableView" name="productList">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -81,7 +81,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QComboBox" name="comboBox">
+  <widget class="QComboBox" name="finalProductCB">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -91,7 +91,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="qtLineEdit">
    <property name="geometry">
     <rect>
      <x>380</x>
@@ -101,12 +101,12 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="workIDLineEdit">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>400</y>
-     <width>151</width>
+     <width>201</width>
      <height>32</height>
     </rect>
    </property>
@@ -160,8 +160,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>328</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -176,8 +176,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>396</x>
+     <y>480</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -185,5 +185,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>addButton</sender>
+   <signal>clicked()</signal>
+   <receiver>PrepareWork</receiver>
+   <slot>addProduct()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>424</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>456</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>deleteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>PrepareWork</receiver>
+   <slot>deleteProduct()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>412</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>455</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>addProduct()</slot>
+  <slot>deleteProduct()</slot>
+ </slots>
 </ui>

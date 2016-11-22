@@ -10,6 +10,7 @@
 #include "dictionary.h"
 #include "product.h"
 #include "productlist.h"
+#include "preparework.h"
 
 namespace Ui {
 class MainWindow;
@@ -40,6 +41,7 @@ private:
     Users *usersWindow;
     Workers *workersWindow;
     ProductList *productListWindow;
+    PrepareWork *prepareWorkWindow;
 
 
 private slots:
@@ -53,6 +55,8 @@ private slots:
     void openUsersWindow();
     void openWorkersWindow();
     void openProductListWindow();
+    void openPrepareWorkWindow();
+
 };
 
 #endif // MAINWINDOW_H

@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     usersWindow = 0;
     workersWindow = 0;
     productListWindow = 0;
+    prepareWorkWindow = 0;
 }
 
 MainWindow::~MainWindow()
@@ -51,6 +52,7 @@ MainWindow::~MainWindow()
     if(usersWindow) delete usersWindow;
     if(workersWindow) delete workersWindow;
     if(productListWindow) delete productListWindow;
+    if(prepareWorkWindow) delete prepareWorkWindow;
 
     delete ui;
 }
@@ -160,9 +162,18 @@ void MainWindow::openProductListWindow()
         productListWindow = new ProductList(this);
         productListWindow->setDB(db);
         productListWindow->setWindowTitle("Słownik produktów");
-        productListWindow->setTable("productsList");
     }
     productListWindow->show();
 }
 
+void MainWindow::openPrepareWorkWindow()
+{
+    if(!prepareWorkWindow){
+        prepareWorkWindow = new PrepareWork(this);
+        prepareWorkWindow->setDB(db);
+        prepareWorkWindow->setWindowTitle("Przygotowanie pracy");
+    }
+    prepareWorkWindow->show();
+
+}
 

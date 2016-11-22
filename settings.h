@@ -19,6 +19,7 @@ public:
     static QString unitDictTableName();
     static QString stateDictTableName();
     static QString productTableName();
+    static QString productViewName();
 };
 
 #endif // SETTINGS_H
