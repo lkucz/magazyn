@@ -18,8 +18,10 @@ public:
     ~Product();
 
     void setDB(const QSqlDatabase &db);
-    void setWindowTitle(const QString &title);
     void show();
+
+signals:
+    void dataChanged();
 
 private slots:
     void accept();
@@ -27,14 +29,13 @@ private slots:
 
 private:
     Ui::Product *ui;
-    QString windowTitle;
 
     QSqlTableModel *nameTableModel;
     QSqlTableModel *typeTableModel;
     QSqlTableModel *materialTableModel;
     QSqlTableModel *finishTableModel;
     QSqlTableModel *colorTableModel;
-
+    QSqlTableModel *unitTableModel;
     QSqlTableModel *productTableModel;
 };
 

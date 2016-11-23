@@ -29,8 +29,6 @@ private slots:
     void on_clearFilterButton_clicked();
     void on_filterEdit_textChanged(const QString &);
 
-    void on_listView_doubleClicked(const QModelIndex &);
-
 private:
     Ui::Dictionary *ui;
     QSqlTableModel *tm;

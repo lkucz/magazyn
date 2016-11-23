@@ -20,6 +20,7 @@ ProductList::ProductList(QWidget *parent) :
     flags = 0;
     tm = 0;
     productWindow = 0;
+    productTableModel = 0;
 }
 
 ProductList::~ProductList()
@@ -27,6 +28,7 @@ ProductList::~ProductList()
     //Usun zaalokowane obiekty
     if(tm) delete tm;
     if(productWindow) delete productWindow;
+    if(productTableModel) delete productTableModel;
 
     delete ui;
 }
@@ -43,8 +45,26 @@ void ProductList::setDB(const QSqlDatabase &db)
     tm->setSort(1, Qt::AscendingOrder);
     tm->select();
 
+    //Zmień nazwy kolumnn
+    tm->setHeaderData(1, Qt::Horizontal, tr("Nazwa"));
+    tm->setHeaderData(2, Qt::Horizontal, tr("Symbol"));
+    tm->setHeaderData(3, Qt::Horizontal, tr("MIN"));
+    tm->setHeaderData(4, Qt::Horizontal, tr("MAX"));
+    tm->setHeaderData(5, Qt::Horizontal, tr("Uwagi"));
+    tm->setHeaderData(7, Qt::Horizontal, tr("Jednostka"));
+
     ui->tableView->setModel(tm);
     ui->tableView->setColumnHidden(0, true);
+    ui->tableView->setColumnHidden(6, true);
+
+    //Przelicz szerokosc kolumn
+    float w = ui->tableView->width()/12;
+    ui->tableView->setColumnWidth(1, (int)w*3);
+    ui->tableView->setColumnWidth(2, (int)w*2);
+    ui->tableView->setColumnWidth(3, (int)w);
+    ui->tableView->setColumnWidth(4, (int)w);
+    ui->tableView->setColumnWidth(5, (int)w*3.2);
+    ui->tableView->setColumnWidth(7, (int)w*1.5);
 }
 
 void ProductList::show()
@@ -57,6 +77,10 @@ void ProductList::show()
     QDialog::show();
 }
 
+void ProductList::refreshTable()
+{
+    tm->select();
+}
 
 void ProductList::on_addButton_clicked()
 {
@@ -64,6 +88,7 @@ void ProductList::on_addButton_clicked()
         productWindow = new Product(this);
         productWindow->setDB(db);
         productWindow->setWindowTitle("Nowy produkt");
+        connect(productWindow, &Product::dataChanged, this, &ProductList::refreshTable);
     }
     productWindow->show();
 }
@@ -72,6 +97,16 @@ void ProductList::on_deleteButton_clicked()
 {
     QMessageBox mb;
     QModelIndexList list;
+
+    //Utworz obiekt tylko w przypadku usuwania
+    if(!productTableModel)
+    {
+        productTableModel = new QSqlTableModel(0, this->db);
+        productTableModel->setTable(Settings::productTableName());
+        productTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+        productTableModel->setSort(1, Qt::AscendingOrder);
+        productTableModel->select();
+    }
 
     list = ui->tableView->selectionModel()->selectedIndexes(); //Pobierz listę zaznaczonych elementow
 
@@ -85,12 +120,21 @@ void ProductList::on_deleteButton_clicked()
     if( mb.exec() == QMessageBox::Yes )
     {
         foreach (const QModelIndex &index, list) {
-            tm->removeRow(index.row());
+            if(index.column() == 0){
+                productTableModel->setFilter("id='" + index.data().toString() + "'");
+                productTableModel->select();
+                productTableModel->removeRow(1);
+                qDebug() << productTableModel->lastError();
+                productTableModel->setFilter("");
+                productTableModel->select();
+            }
         }
     }
 
-    tm->submitAll();
-    qDebug() << tm->lastError();
+    productTableModel->submitAll();
+    qDebug() << productTableModel->lastError();
+
+    productTableModel->select();
     tm->select();
 }
 

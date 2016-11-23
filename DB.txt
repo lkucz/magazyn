@@ -99,7 +99,7 @@ AS SELECT
     product.alarm_max,
     product.comment,
     product.upw,
-    product.unit
+    unitDict.name as unit
 FROM product
 INNER JOIN productDict ON productDict.id = product.name
 INNER JOIN typeDict ON typeDict.id = product.type

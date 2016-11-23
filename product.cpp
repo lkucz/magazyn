@@ -1,7 +1,6 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlRecord>
-
 #include "product.h"
 #include "ui_product.h"
 #include "settings.h"
@@ -12,25 +11,27 @@ Product::Product(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //Zerowanie wskaznikow do tabel SQL
     nameTableModel = 0;
     typeTableModel = 0;
     materialTableModel = 0;
     finishTableModel = 0;
     colorTableModel = 0;
-
+    unitTableModel = 0;
     productTableModel = 0;
 }
 
 Product::~Product()
 {
-    delete ui;
-
     if(nameTableModel) delete nameTableModel;
     if(typeTableModel) delete typeTableModel;
     if(materialTableModel) delete materialTableModel;
     if(finishTableModel) delete finishTableModel;
     if(colorTableModel) delete colorTableModel;
+    if(unitTableModel) delete unitTableModel;
     if(productTableModel) delete productTableModel;
+
+    delete ui;
 }
 
 void Product::setDB(const QSqlDatabase &db)
@@ -42,6 +43,7 @@ void Product::setDB(const QSqlDatabase &db)
     if(materialTableModel) delete materialTableModel;
     if(finishTableModel) delete finishTableModel;
     if(colorTableModel) delete colorTableModel;
+    if(unitTableModel) delete unitTableModel;
     if(productTableModel) delete productTableModel;
 
     nameTableModel = new QSqlTableModel(0, db);
@@ -49,6 +51,7 @@ void Product::setDB(const QSqlDatabase &db)
     materialTableModel = new QSqlTableModel(0, db);
     finishTableModel = new QSqlTableModel(0, db);
     colorTableModel = new QSqlTableModel(0, db);
+    unitTableModel = new QSqlTableModel(0, db);
     productTableModel = new QSqlTableModel(0, db);
 
     nameTableModel->setTable(Settings::productDictTableName());
@@ -81,17 +84,17 @@ void Product::setDB(const QSqlDatabase &db)
     ui->colorCB->setModel(colorTableModel);
     ui->colorCB->setModelColumn(1);
 
+    unitTableModel->setTable(Settings::unitDictTableName());
+    unitTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    unitTableModel->setSort(1, Qt::AscendingOrder);
+    ui->unitCB->setModel(unitTableModel);
+    ui->unitCB->setModelColumn(1);
+
     productTableModel->setTable(Settings::productTableName());
     productTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
     productTableModel->setSort(0, Qt::AscendingOrder);
     productTableModel->select();
 
-}
-
-void Product::setWindowTitle(const QString &title)
-{
-    windowTitle = title;
-    QDialog::setWindowTitle(windowTitle);
 }
 
 void Product::show()
@@ -101,6 +104,7 @@ void Product::show()
     if(materialTableModel) materialTableModel->select();
     if(finishTableModel) finishTableModel->select();
     if(colorTableModel) colorTableModel->select();
+    if(unitTableModel) unitTableModel->select();
 
     QDialog::show();
 }
@@ -159,6 +163,19 @@ void Product::accept()
             ui->symbol->setFocus();
             return ;
         }
+    }
+
+    //Walidacja jednstek
+    if(ui->unitCB->currentIndex() == -1 || ui->unitCB->currentIndex() == 0)
+    {
+        mb.setText("Nie została wybrana jednostka dla produktu.");
+        mb.setIcon(QMessageBox::Warning);
+        mb.setStandardButtons(QMessageBox::Ok);
+        mb.setDefaultButton(QMessageBox::Ok);
+        mb.exec();
+
+        ui->productCB->setFocus();
+        return ;
     }
 
     //Walidacja alarmow
@@ -263,6 +280,10 @@ void Product::accept()
     else
         newRecord.setValue("color", QVariant("0"));
 
+    //Odczytaj wartosc combobox jednostki produktu
+    row = ui->unitCB->currentIndex();
+    newRecord.setValue("unit", unitTableModel->index(row, column).data());
+
     if( productTableModel->insertRecord(-1, newRecord) != true )
     {
         qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::productDictTableName();
@@ -271,6 +292,7 @@ void Product::accept()
 
     // Przeslij rekord do bazy
     productTableModel->submitAll();
+    emit dataChanged();
     this->hide();
 }
 

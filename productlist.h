@@ -33,6 +33,7 @@ signals:
     void dataSelected(QModelIndexList list);
 
 private slots:
+    void refreshTable();
     void on_addButton_clicked();
     void on_deleteButton_clicked();
     void on_tableView_doubleClicked(const QModelIndex &index);
@@ -45,6 +46,7 @@ private:
     Ui::ProductList *ui;
 
     QSqlTableModel *tm;
+    QSqlTableModel *productTableModel;
     QSqlDatabase db;
 
     unsigned int flags;
