@@ -146,7 +146,7 @@
     <string>Data wystawienia </string>
    </property>
   </widget>
-  <widget class="QDateEdit" name="date">
+  <widget class="QDateEdit" name="dateEdit">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -154,6 +154,19 @@
      <width>121</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="calendarPopup">
+    <bool>true</bool>
+   </property>
+   <property name="timeSpec">
+    <enum>Qt::UTC</enum>
+   </property>
+   <property name="date">
+    <date>
+     <year>2000</year>
+     <month>1</month>
+     <day>1</day>
+    </date>
    </property>
   </widget>
  </widget>

@@ -99,27 +99,11 @@ void PrepareWork::deleteProduct()
 
     if( mb.exec() == QMessageBox::Yes )
     {
-        // Wyszukaj numerow rzedow, ktore nalezy usunac
-        // utworz hashmap, wybierz unikalne klucze
-        QMap<int, int> map;
-        QList<int> row;
-
         foreach (const QModelIndex &index, list) {
-            map.insert(index.row(), index.row());
-        }
-
-        row = map.uniqueKeys();     // wybierz unikalne klucze
-        qSort(row);                 // sortuj
-
-        QListIterator<int> i(row);  // utworz liste
-        i.toBack();                 // ustaw iterator na koniec
-
-        // usun elementy od konca
-        while(i.hasPrevious())
-        {
-            int r = i.previous();
-            tableModel->removeRow(r);
-            products.removeAt(r);
+            if(index.column()==0){
+                tableModel->removeRow(index.row());
+                products.removeAt(index.row());
+            }
         }
     }
 }

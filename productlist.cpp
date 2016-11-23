@@ -104,7 +104,7 @@ void ProductList::on_deleteButton_clicked()
         productTableModel = new QSqlTableModel(0, this->db);
         productTableModel->setTable(Settings::productTableName());
         productTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-        productTableModel->setSort(1, Qt::AscendingOrder);
+        productTableModel->setSort(0, Qt::AscendingOrder);
         productTableModel->select();
     }
 
@@ -121,21 +121,18 @@ void ProductList::on_deleteButton_clicked()
     {
         foreach (const QModelIndex &index, list) {
             if(index.column() == 0){
+                qDebug() << index.data().toString();
                 productTableModel->setFilter("id='" + index.data().toString() + "'");
                 productTableModel->select();
-                productTableModel->removeRow(1);
-                qDebug() << productTableModel->lastError();
+                qDebug()<<productTableModel->removeRow(1);
                 productTableModel->setFilter("");
                 productTableModel->select();
             }
         }
+        productTableModel->submitAll();
+        productTableModel->select();
+        tm->select();
     }
-
-    productTableModel->submitAll();
-    qDebug() << productTableModel->lastError();
-
-    productTableModel->select();
-    tm->select();
 }
 
 void ProductList::accept()

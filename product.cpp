@@ -139,7 +139,6 @@ void Product::accept()
 
         ui->symbol->setFocus();
         return ;
-
     }
     else
     {
