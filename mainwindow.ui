@@ -57,6 +57,7 @@
      <string>Ma&amp;gazyn</string>
     </property>
     <addaction name="actionAddToStore"/>
+    <addaction name="actionStoreReport"/>
    </widget>
    <widget class="QMenu" name="menuDokumenty">
     <property name="title">
@@ -142,7 +143,12 @@
   </action>
   <action name="actionAddToStore">
    <property name="text">
-    <string>Przyjmij na magazyn</string>
+    <string>&amp;Przyjmij na magazyn</string>
+   </property>
+  </action>
+  <action name="actionStoreReport">
+   <property name="text">
+    <string>Stan magazynu</string>
    </property>
   </action>
  </widget>

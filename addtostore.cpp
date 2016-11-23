@@ -13,9 +13,9 @@ AddToStore::AddToStore(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    docTypeTableModel = 0;      //QSqlTableModel dla rodzaju dokumentow
-    productListWindow = 0;      //Okno z lista produktów
-    productListTableModel = 0;             //Model dla tableView
+    docTypeTableModel = 0;          //QSqlTableModel dla rodzaju dokumentow
+    productListWindow = 0;          //Okno z lista produktów
+    productListTableModel = 0;      //Model dla tableView
 }
 
 AddToStore::~AddToStore()

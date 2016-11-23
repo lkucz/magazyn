@@ -47,11 +47,11 @@ QString Settings::stateDictTableName()
 
 QString Settings::productTableName()
 {
-    return QString("products");             //tabela z listą produktów
+    return QString("product");             //tabela z listą produktów
 }
 
 QString Settings::productViewName()
 {
-    return QString("productsList");         //widok z lista produkow, zawiera nazwy zamiast ID
+    return QString("productList");         //widok z lista produkow, zawiera nazwy zamiast ID
 
 }
