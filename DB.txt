@@ -109,7 +109,7 @@ INNER JOIN colorDict ON colorDict.id = product.color
 INNER JOIN unitDict ON unitDict.id = product.unit;
 
 
-CREATE TABLE documents (
+CREATE TABLE document (
         id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY, 
         numer VARCHAR(255) NOT NULL,  
         date DATE NOT NULL, 
@@ -121,12 +121,10 @@ CREATE TABLE store (
 	id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY, 
         product INT NOT NULL,
 	quantity FLOAT NOT NULL, 
-	unit INT NOT NULL, 
 	date DATETIME NOT NULL, 
 	document INT NOT NULL, 
         FOREIGN KEY (product) REFERENCES product(id) ON DELETE CASCADE,
-	FOREIGN KEY (unit) REFERENCES unitDict(id) ON DELETE CASCADE, 
-	FOREIGN KEY (document) REFERENCES documents(id) ON DELETE CASCADE
+        FOREIGN KEY (document) REFERENCES document(id) ON DELETE CASCADE
 );
 
 CREATE TABLE user (
@@ -161,7 +159,7 @@ CREATE TABLE production (
 	qty_out FLOAT, 
 	product INT NOT NULL, 
 	user	INT NOT NULL,
-	FOREIGN KEY (document) REFERENCES documents(id) ON DELETE CASCADE, 
+        FOREIGN KEY (document) REFERENCES document(id) ON DELETE CASCADE,
 	FOREIGN KEY (worker) REFERENCES worker(id) ON DELETE CASCADE, 
 	FOREIGN KEY (state) REFERENCES stateDict(id) ON DELETE CASCADE, 
         FOREIGN KEY (product) REFERENCES product(id) ON DELETE CASCADE,
