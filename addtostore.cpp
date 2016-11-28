@@ -13,8 +13,10 @@ AddToStore::AddToStore(QWidget *parent) :
     ui->setupUi(this);
 
     docTypeTableModel = 0;          //QSqlTableModel dla rodzaju dokumentow
+    documentTableModel = 0;         //Tabela z numerami dokumentow
     productListWindow = 0;          //Okno z lista produktów
-    productListTableModel = 0;      //Model dla tableView
+    productListTableModel = 0;      //Model dla tableView (tabelka z produktami do wprowadzenia na magazyn)
+    productTableModel = 0;          //Model dla tabeli z produktami
 }
 
 AddToStore::~AddToStore()
@@ -23,6 +25,8 @@ AddToStore::~AddToStore()
     if(docTypeTableModel) delete docTypeTableModel;
     if(productListWindow) delete productListWindow;
     if(productListTableModel) delete productListTableModel;
+    if(documentTableModel) delete documentTableModel;
+    if(productTableModel) delete productTableModel;
 
     delete ui;
 }
@@ -33,6 +37,7 @@ void AddToStore::setDB(const QSqlDatabase &db)
 
     if(docTypeTableModel) delete docTypeTableModel;           //Usun wskaznik jezeli zostal wczesniej zainnicjalizowany
 
+    // Ustaw paramatry dla ComboBox z rodzajem dokumentow
     docTypeTableModel = new QSqlTableModel(0, db);
     docTypeTableModel->setTable(Settings::documentDictTableName());
     docTypeTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -41,6 +46,24 @@ void AddToStore::setDB(const QSqlDatabase &db)
 
     ui->documentType->setModel(docTypeTableModel);
     ui->documentType->setModelColumn(1);
+
+    // Inicjalizacja tabeli z dokumentami
+    if(documentTableModel) delete documentTableModel;
+
+    documentTableModel = new QSqlTableModel(0, db);
+    documentTableModel->setTable(Settings::documentTableName());
+    documentTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    documentTableModel->setSort(1, Qt::AscendingOrder);
+    documentTableModel->select();
+
+    // Inicjalizacja tabeli z produktami
+    if(productTableModel) delete productTableModel;
+
+    productTableModel = new QSqlTableModel(0, db);
+    productTableModel->setTable(Settings::productTableName());
+    productTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    productTableModel->setSort(1, Qt::AscendingOrder);
+    productTableModel->select();
 }
 
 void AddToStore::show()
@@ -147,6 +170,7 @@ void AddToStore::accept()
 {
     QMessageBox mb;
     QSqlRecord newRecord;
+    int rows;
 
     //Walidacja dokumentu
     if(ui->documentType->currentIndex() == -1 || ui->documentType->currentIndex() == 0)
@@ -175,19 +199,71 @@ void AddToStore::accept()
     else
     {
         //Sprawdz czy podany numer istnieje w bazie
+
+        //Ustaw filter i sprawdz czy numer dokumentu istnieje w bazie
+        documentTableModel->setFilter("number='"+ui->documentID->text()+"'");
+        documentTableModel->select();
+        rows = documentTableModel->rowCount();
+
+        //Usun filter
+        documentTableModel->setFilter(QString());
+        docTypeTableModel->select();
+
+        if(rows > 0)
+        {
+            mb.setText("Podany numer dokumentu istnieje w bazie danych.");
+            mb.setIcon(QMessageBox::Warning);
+            mb.setStandardButtons(QMessageBox::Ok);
+            mb.setDefaultButton(QMessageBox::Ok);
+            mb.exec();
+
+            ui->documentID->setFocus();
+            return ;
+        }
     }
 
     //Walidacja listy produktów
+    rows = productListTableModel->rowCount();
 
-
-
-    QListIterator<QModelIndexList> i(products);
-    while(i.hasNext())
+    //Lista produktów jest pusta
+    if(rows == 0)
     {
-        foreach (const QModelIndex &index, i.next()) {
-            qDebug()<<index.data();
+        mb.setText("Tabela nie zawiera produktów.");
+        mb.setIcon(QMessageBox::Warning);
+        mb.setStandardButtons(QMessageBox::Ok);
+        mb.setDefaultButton(QMessageBox::Ok);
+        mb.exec();
+
+        return ;
+    }
+
+    for(int i=0; i<rows; ++i)
+    {
+        QModelIndex index = productListTableModel->index(i, 3); //Kolumna z ilosciami produkow
+        if(productListTableModel->data(index).toFloat() == 0)
+        {
+            mb.setText("Przynajmniej jeden z produków w tabeli zawiera zerową ilość.");
+            mb.setIcon(QMessageBox::Warning);
+            mb.setStandardButtons(QMessageBox::Ok);
+            mb.setDefaultButton(QMessageBox::Ok);
+            mb.exec();
+
+            return;
         }
     }
+
+    //Dodaj dokument do bazy danych
+
+    //Dodaj produkty do bazy danych
+
+
+//    QListIterator<QModelIndexList> i(products);
+//    while(i.hasNext())
+//    {
+//        foreach (const QModelIndex &index, i.next()) {
+//            qDebug()<<index.data();
+//        }
+//    }
 
     // this->hide();
 }

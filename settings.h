@@ -20,6 +20,7 @@ public:
     static QString stateDictTableName();
     static QString productTableName();
     static QString productViewName();
+    static QString documentTableName();
 };
 
 #endif // SETTINGS_H

@@ -31,6 +31,8 @@ private:
     QSqlDatabase db;
     QStandardItemModel *productListTableModel;
     QSqlTableModel *docTypeTableModel;
+    QSqlTableModel *documentTableModel;
+    QSqlTableModel *productTableModel;
     QList<QModelIndexList> products;
 
     ProductList *productListWindow;

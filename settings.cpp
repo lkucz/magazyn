@@ -55,3 +55,8 @@ QString Settings::productViewName()
     return QString("productList");         //widok z lista produkow, zawiera nazwy zamiast ID
 
 }
+
+QString Settings::documentTableName()
+{
+    return QString("document");             //tabela z wprowadzonymi dokumentami FV, WZ, itd
+}
