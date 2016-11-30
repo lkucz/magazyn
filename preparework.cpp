@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QList>
 #include <QMap>
+#include <QSqlRecord>
 #include "productlist.h"
 #include "preparework.h"
 #include "settings.h"
@@ -127,6 +128,35 @@ void PrepareWork::dataSelected(QModelIndexList list)
 
 void PrepareWork::accept()
 {
+    QMessageBox mb;
+    QSqlRecord newRecord;
+    int rows;
+
+    //Walidacja dokumentu
+    if(ui->finalProductCB->currentIndex() == -1 || ui->finalProductCB->currentIndex() == 0)
+    {
+        mb.setText("Nie został wybrany typ dokumentu.");
+        mb.setIcon(QMessageBox::Warning);
+        mb.setStandardButtons(QMessageBox::Ok);
+        mb.setDefaultButton(QMessageBox::Ok);
+        mb.exec();
+
+        //ui->documentType->setFocus();
+        return ;
+    }
+
+    if(ui->workIDLineEdit->text().isEmpty() == true)
+    {
+        mb.setText("Nie został wybrany typ dokumentu.");
+        mb.setIcon(QMessageBox::Warning);
+        mb.setStandardButtons(QMessageBox::Ok);
+        mb.setDefaultButton(QMessageBox::Ok);
+        mb.exec();
+
+        //ui->documentType->setFocus();
+        return ;
+    }
+
     QListIterator<QModelIndexList> i(products);
     while(i.hasNext())
     {

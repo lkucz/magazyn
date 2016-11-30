@@ -60,3 +60,8 @@ QString Settings::documentTableName()
 {
     return QString("document");             //tabela z wprowadzonymi dokumentami FV, WZ, itd
 }
+
+QString Settings::storeTableName()
+{
+    return QString("store");
+}

@@ -3,6 +3,7 @@
 #include <QModelIndexList>
 #include <QModelIndex>
 #include <QSqlRecord>
+#include <QDateTime>
 #include "addtostore.h"
 #include "ui_addtostore.h"
 
@@ -16,7 +17,7 @@ AddToStore::AddToStore(QWidget *parent) :
     documentTableModel = 0;         //Tabela z numerami dokumentow
     productListWindow = 0;          //Okno z lista produktów
     productListTableModel = 0;      //Model dla tableView (tabelka z produktami do wprowadzenia na magazyn)
-    productTableModel = 0;          //Model dla tabeli z produktami
+    storeTableModel = 0;          //Model dla magazynu w bazie danych
 }
 
 AddToStore::~AddToStore()
@@ -26,7 +27,7 @@ AddToStore::~AddToStore()
     if(productListWindow) delete productListWindow;
     if(productListTableModel) delete productListTableModel;
     if(documentTableModel) delete documentTableModel;
-    if(productTableModel) delete productTableModel;
+    if(storeTableModel) delete storeTableModel;
 
     delete ui;
 }
@@ -47,9 +48,6 @@ void AddToStore::setDB(const QSqlDatabase &db)
     ui->documentType->setModel(docTypeTableModel);
     ui->documentType->setModelColumn(1);
 
-    ui->comboBox->setModel(docTypeTableModel);
-    ui->comboBox->setModelColumn(1);
-
     // Inicjalizacja tabeli z dokumentami
     if(documentTableModel) delete documentTableModel;
 
@@ -60,13 +58,13 @@ void AddToStore::setDB(const QSqlDatabase &db)
     documentTableModel->select();
 
     // Inicjalizacja tabeli z produktami
-    if(productTableModel) delete productTableModel;
+    if(storeTableModel) delete storeTableModel;
 
-    productTableModel = new QSqlTableModel(0, db);
-    productTableModel->setTable(Settings::productTableName());
-    productTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    productTableModel->setSort(1, Qt::AscendingOrder);
-    productTableModel->select();
+    storeTableModel = new QSqlTableModel(0, db);
+    storeTableModel->setTable(Settings::storeTableName());
+    storeTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    storeTableModel->setSort(1, Qt::AscendingOrder);
+    storeTableModel->select();
 }
 
 void AddToStore::show()
@@ -175,25 +173,24 @@ void AddToStore::accept()
     QSqlRecord newRecord;
     int rows;
 
+    // Ustaw domyślne wartości dla okienka ostrzeżenia
+    mb.setIcon(QMessageBox::Warning);
+    mb.setStandardButtons(QMessageBox::Ok);
+    mb.setDefaultButton(QMessageBox::Ok);
+
     //Walidacja dokumentu
     if(ui->documentType->currentIndex() == -1 || ui->documentType->currentIndex() == 0)
     {
         mb.setText("Nie został wybrany typ dokumentu.");
-        mb.setIcon(QMessageBox::Warning);
-        mb.setStandardButtons(QMessageBox::Ok);
-        mb.setDefaultButton(QMessageBox::Ok);
         mb.exec();
 
-        //ui->documentType->setFocus();
+        ui->documentType->setFocus();
         return ;
     }
 
     if(ui->documentID->text().isEmpty() == true)
     {
         mb.setText("Nie został wpisany numer dokumentu.");
-        mb.setIcon(QMessageBox::Warning);
-        mb.setStandardButtons(QMessageBox::Ok);
-        mb.setDefaultButton(QMessageBox::Ok);
         mb.exec();
 
         ui->documentID->setFocus();
@@ -210,14 +207,11 @@ void AddToStore::accept()
 
         //Usun filter
         documentTableModel->setFilter(QString());
-        docTypeTableModel->select();
+        documentTableModel->select();
 
         if(rows > 0)
         {
             mb.setText("Podany numer dokumentu istnieje w bazie danych.");
-            mb.setIcon(QMessageBox::Warning);
-            mb.setStandardButtons(QMessageBox::Ok);
-            mb.setDefaultButton(QMessageBox::Ok);
             mb.exec();
 
             ui->documentID->setFocus();
@@ -232,9 +226,6 @@ void AddToStore::accept()
     if(rows == 0)
     {
         mb.setText("Tabela nie zawiera produktów.");
-        mb.setIcon(QMessageBox::Warning);
-        mb.setStandardButtons(QMessageBox::Ok);
-        mb.setDefaultButton(QMessageBox::Ok);
         mb.exec();
 
         return ;
@@ -246,9 +237,6 @@ void AddToStore::accept()
         if(productListTableModel->data(index).toFloat() <= 0)
         {
             mb.setText("Przynajmniej jeden z produków w tabeli zawiera zerową ilość.");
-            mb.setIcon(QMessageBox::Warning);
-            mb.setStandardButtons(QMessageBox::Ok);
-            mb.setDefaultButton(QMessageBox::Ok);
             mb.exec();
 
             return;
@@ -264,9 +252,6 @@ void AddToStore::accept()
     docNewRecord.setValue("number", ui->documentID->text());
     docNewRecord.setValue("date", QVariant(ui->dateEdit->text()));
     r = ui->documentType->currentIndex();   // Pobierz index z ComboBox - rodzaj dokumentu
-    qDebug() << r;
-    qDebug() << docTypeTableModel->index(r, c).data();
-
     docNewRecord.setValue("type", QVariant(docTypeTableModel->index(r, c).data()));   // c-kolumna ustawiona na 0, w każdej tabeli pole ID==0
 
     if(documentTableModel->insertRecord(-1, docNewRecord) != true)
@@ -278,22 +263,44 @@ void AddToStore::accept()
         return;
     }
 
-    qDebug() << docNewRecord;
+    documentTableModel->submitAll();
 
-    docTypeTableModel->submitAll();
+    //Znajdz przydzielony numer id w tablicy dokumentów, szukaj w polu number = 1
+    QModelIndexList list = documentTableModel->match(documentTableModel->index(0,1),
+                                                  Qt::DisplayRole, docNewRecord.value("number"));
+    if(list.size() != 1)
+    {
+        qDebug() << "Problem z wyszukaniem numeru dokumentu w tablicy";
+        qDebug() << docNewRecord;
+        qDebug() << list;
 
+        return;
+    }
+
+    qDebug() << documentTableModel->data(list[0]);
+    return ;
 
     //Dodaj produkty do bazy danych
     QSqlRecord productNewRecord;
-    productNewRecord = productTableModel->record();
+    productNewRecord = storeTableModel->record();
+    productNewRecord.setGenerated("id", true);
+    productNewRecord.setValue("product", 1);
+    productNewRecord.setValue("quantity", 2);
+    productNewRecord.setValue("date", QDateTime(QDateTime::currentDateTime()));
+    productNewRecord.setValue("document", 1);
 
-//    QListIterator<QModelIndexList> i(products);
-//    while(i.hasNext())
-//    {
-//        foreach (const QModelIndex &index, i.next()) {
-//            qDebug()<<index.data();
-//        }
-//    }
+    //qDebug() << productNewRecord;
+
+    //documentTableModel->submitAll();
+    //storeTableModel->submitAll();
+
+    //    QListIterator<QModelIndexList> i(products);
+    //    while(i.hasNext())
+    //    {
+    //        foreach (const QModelIndex &index, i.next()) {
+    //            qDebug()<<index.data();
+    //        }
+    //    }
 
     // this->hide();
 }
