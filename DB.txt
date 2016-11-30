@@ -111,7 +111,7 @@ INNER JOIN unitDict ON unitDict.id = product.unit;
 
 CREATE TABLE document (
         id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-        numer VARCHAR(255) NOT NULL,  
+        number VARCHAR(255) NOT NULL,
         date DATE NOT NULL, 
         type INT NOT NULL, 
         FOREIGN KEY (type) REFERENCES  documentDict(id) ON DELETE CASCADE

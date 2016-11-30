@@ -47,6 +47,9 @@ void AddToStore::setDB(const QSqlDatabase &db)
     ui->documentType->setModel(docTypeTableModel);
     ui->documentType->setModelColumn(1);
 
+    ui->comboBox->setModel(docTypeTableModel);
+    ui->comboBox->setModelColumn(1);
+
     // Inicjalizacja tabeli z dokumentami
     if(documentTableModel) delete documentTableModel;
 
@@ -181,7 +184,7 @@ void AddToStore::accept()
         mb.setDefaultButton(QMessageBox::Ok);
         mb.exec();
 
-        ui->documentType->setFocus();
+        //ui->documentType->setFocus();
         return ;
     }
 
@@ -239,8 +242,8 @@ void AddToStore::accept()
 
     for(int i=0; i<rows; ++i)
     {
-        QModelIndex index = productListTableModel->index(i, 3); //Kolumna z ilosciami produkow
-        if(productListTableModel->data(index).toFloat() == 0)
+        QModelIndex index = productListTableModel->index(i, 2); //Kolumna z ilosciami produkow
+        if(productListTableModel->data(index).toFloat() <= 0)
         {
             mb.setText("Przynajmniej jeden z produków w tabeli zawiera zerową ilość.");
             mb.setIcon(QMessageBox::Warning);
@@ -253,9 +256,36 @@ void AddToStore::accept()
     }
 
     //Dodaj dokument do bazy danych
+    QSqlRecord docNewRecord;
+    int r=0, c=0;
+
+    docNewRecord = documentTableModel->record();
+    docNewRecord.setGenerated("id", true);
+    docNewRecord.setValue("number", ui->documentID->text());
+    docNewRecord.setValue("date", QVariant(ui->dateEdit->text()));
+    r = ui->documentType->currentIndex();   // Pobierz index z ComboBox - rodzaj dokumentu
+    qDebug() << r;
+    qDebug() << docTypeTableModel->index(r, c).data();
+
+    docNewRecord.setValue("type", QVariant(docTypeTableModel->index(r, c).data()));   // c-kolumna ustawiona na 0, w każdej tabeli pole ID==0
+
+    if(documentTableModel->insertRecord(-1, docNewRecord) != true)
+    {
+        //Zapis do bazy danych sie nie udal
+        qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::productTableName();
+        qDebug() << docNewRecord;
+
+        return;
+    }
+
+    qDebug() << docNewRecord;
+
+    docTypeTableModel->submitAll();
+
 
     //Dodaj produkty do bazy danych
-
+    QSqlRecord productNewRecord;
+    productNewRecord = productTableModel->record();
 
 //    QListIterator<QModelIndexList> i(products);
 //    while(i.hasNext())
