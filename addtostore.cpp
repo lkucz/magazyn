@@ -4,6 +4,8 @@
 #include <QModelIndex>
 #include <QSqlRecord>
 #include <QDateTime>
+#include <QSqlQuery>
+#include <QSqlError>
 #include "addtostore.h"
 #include "ui_addtostore.h"
 
@@ -147,7 +149,7 @@ void AddToStore::dataSelected(QModelIndexList list)
 {
     QList<QStandardItem *> row;
 
-    products.append(list); //Zapisz produkt na liscie
+    products.append(list[0].data().toInt()); //Zapisz produkt na liscie
 
     //Dodaj nazwę produktu
     row.append(new QStandardItem(list[1].data().toString()));
@@ -263,46 +265,42 @@ void AddToStore::accept()
         return;
     }
 
+    //Prześlij zaminy do bazy danych
     documentTableModel->submitAll();
 
-    //Znajdz przydzielony numer id w tablicy dokumentów, szukaj w polu number = 1
-    QModelIndexList list = documentTableModel->match(documentTableModel->index(0,1),
-                                                  Qt::DisplayRole, docNewRecord.value("number"));
-    if(list.size() != 1)
-    {
-        qDebug() << "Problem z wyszukaniem numeru dokumentu w tablicy";
-        qDebug() << docNewRecord;
-        qDebug() << list;
 
-        return;
+    //Pobierz numer id dla nowego dokumentu
+    QSqlQuery docIDQuery(this->db);
+    docIDQuery.prepare("SELECT id FROM document WHERE number=:ID");
+    docIDQuery.bindValue(":ID", docNewRecord.value("number"));
+    docIDQuery.exec();
+
+    if(docIDQuery.size() != 1)
+    {
+        qDebug() << "Problem z wynikiem zapytania do bazy danych";
+        qDebug() << "docIDQuery.size() " << docIDQuery.size();
+
+        return ;
     }
 
-    qDebug() << documentTableModel->data(list[0]);
-    return ;
-
     //Dodaj produkty do bazy danych
-    QSqlRecord productNewRecord;
-    productNewRecord = storeTableModel->record();
-    productNewRecord.setGenerated("id", true);
-    productNewRecord.setValue("product", 1);
-    productNewRecord.setValue("quantity", 2);
-    productNewRecord.setValue("date", QDateTime(QDateTime::currentDateTime()));
-    productNewRecord.setValue("document", 1);
+    for(int i=0; i<rows; ++i)
+    {
+        QModelIndex index = productListTableModel->index(i, 2);     //Kolumna w view zawierająca ilość == 2
+        float quantity = productListTableModel->data(index).toFloat();
 
-    //qDebug() << productNewRecord;
+        QSqlRecord productNewRecord;
+        productNewRecord = storeTableModel->record();
+        productNewRecord.setGenerated("id", true);
+        productNewRecord.setValue("product", products[i]);
+        productNewRecord.setValue("quantity", quantity);
+        productNewRecord.setValue("date", QDateTime(QDateTime::currentDateTime()));
+        productNewRecord.setValue("document", docIDQuery.value(0).toInt());
+    }
 
-    //documentTableModel->submitAll();
-    //storeTableModel->submitAll();
+    storeTableModel->submitAll();
 
-    //    QListIterator<QModelIndexList> i(products);
-    //    while(i.hasNext())
-    //    {
-    //        foreach (const QModelIndex &index, i.next()) {
-    //            qDebug()<<index.data();
-    //        }
-    //    }
-
-    // this->hide();
+    this->hide();
 }
 
 void AddToStore::reject()

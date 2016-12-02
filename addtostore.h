@@ -33,7 +33,7 @@ private:
     QSqlTableModel *docTypeTableModel;
     QSqlTableModel *documentTableModel;
     QSqlTableModel *storeTableModel;
-    QList<QModelIndexList> products;
+    QList<int> products;
 
     ProductList *productListWindow;
 

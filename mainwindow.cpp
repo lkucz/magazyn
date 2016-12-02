@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     productListWindow = 0;
     prepareWorkWindow = 0;
     addToStoreWindow = 0;
+
+    productionWindow = 0;
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +58,8 @@ MainWindow::~MainWindow()
     if(productListWindow) delete productListWindow;
     if(prepareWorkWindow) delete prepareWorkWindow;
     if(addToStoreWindow) delete addToStoreWindow;
+
+    if(productionWindow) delete productionWindow;
 
     delete ui;
 }
@@ -188,5 +192,16 @@ void MainWindow::openAddToStoreWindow()
         addToStoreWindow->setWindowTitle("Wprowadź produkty na magazyn");
     }
     addToStoreWindow->show();
+
+}
+
+void MainWindow::openWorkListWindow()
+{
+    if(!productionWindow){
+        productionWindow = new Production(this);
+        productionWindow->setDB(db);
+        productionWindow->setWindowTitle("TEST");
+    }
+    productionWindow->show();
 
 }

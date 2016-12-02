@@ -50,7 +50,7 @@
     <addaction name="actionPrepareWork"/>
     <addaction name="actionGiveWork"/>
     <addaction name="actionTakeWork"/>
-    <addaction name="actionLista_prac"/>
+    <addaction name="actionWorkList"/>
    </widget>
    <widget class="QMenu" name="menuMagazyn">
     <property name="title">
@@ -136,7 +136,7 @@
     <string>&amp;Odbierz pracę</string>
    </property>
   </action>
-  <action name="actionLista_prac">
+  <action name="actionWorkList">
    <property name="text">
     <string>&amp;Lista prac</string>
    </property>
@@ -347,6 +347,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionWorkList</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openWorkListWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openProductDictWindow()</slot>
@@ -361,5 +377,6 @@
   <slot>openProductListWindow()</slot>
   <slot>openPrepareWorkWindow()</slot>
   <slot>openAddToStoreWindow()</slot>
+  <slot>openWorkListWindow()</slot>
  </slots>
 </ui>
