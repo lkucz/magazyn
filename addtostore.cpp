@@ -89,10 +89,10 @@ void AddToStore::show()
 
     //Przelicz szerokosc kolumn
     float w = ui->productList->width()/7;
-    ui->productList->setColumnWidth(0, (int)w*2);
-    ui->productList->setColumnWidth(1, (int)w*2);
+    ui->productList->setColumnWidth(0, (int)w*2.2);
+    ui->productList->setColumnWidth(1, (int)w*2.2);
     ui->productList->setColumnWidth(2, (int)w*1.2);
-    ui->productList->setColumnWidth(2, (int)w*1.2);
+    ui->productList->setColumnWidth(3, (int)w*1.2);
 
     //Usuń wszystkie produkty z listy
     products.clear();
