@@ -141,11 +141,11 @@ CREATE VIEW storeQty AS
         finishDict.name, colorDict.name
     ) AS name,
     product.symbol,
+    storeCount.qty,
+    unitDict.name as unit,
     product.alarm_min,
     product.alarm_max,
-    product.comment,
-    storeCount.qty,
-    unitDict.name as unit
+    product.comment
 FROM product
 INNER JOIN productDict ON productDict.id = product.name
 INNER JOIN typeDict ON typeDict.id = product.type

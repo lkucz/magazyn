@@ -22,6 +22,7 @@ public:
     static QString productViewName();
     static QString documentTableName();
     static QString storeTableName();
+    static QString storeQtyTableName();
 };
 
 #endif // SETTINGS_H

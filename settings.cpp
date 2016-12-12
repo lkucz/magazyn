@@ -65,3 +65,8 @@ QString Settings::storeTableName()
 {
     return QString("store");
 }
+
+QString Settings::storeQtyTableName()
+{
+    return QString("storeQty");
+}

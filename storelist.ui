@@ -29,13 +29,13 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QTableWidget" name="tableWidget">
+  <widget class="QTableView" name="tableView">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>701</width>
-     <height>541</height>
+     <width>691</width>
+     <height>531</height>
     </rect>
    </property>
   </widget>
@@ -49,8 +49,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>588</x>
+     <y>574</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -65,8 +65,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>656</x>
+     <y>580</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

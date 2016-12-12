@@ -23,6 +23,7 @@ private:
     Ui::StoreList *ui;
 
     QSqlDatabase db;
+    QSqlTableModel *tableModel;
 
 private slots:
     void accept();
