@@ -245,6 +245,10 @@ void AddToStore::accept()
         }
     }
 
+    /*
+     *  Walidcja zakończona pozytywnie. Można dodać elementy do bazy danych
+     */
+
     //Dodaj dokument do bazy danych
     QSqlRecord docNewRecord;
     int r=0, c=0;
@@ -259,7 +263,7 @@ void AddToStore::accept()
     if(documentTableModel->insertRecord(-1, docNewRecord) != true)
     {
         //Zapis do bazy danych sie nie udal
-        qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::productTableName();
+        qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::documentTableName();
         qDebug() << docNewRecord;
 
         return;
@@ -268,12 +272,12 @@ void AddToStore::accept()
     //Prześlij zaminy do bazy danych
     documentTableModel->submitAll();
 
-
     //Pobierz numer id dla nowego dokumentu
     QSqlQuery docIDQuery(this->db);
     docIDQuery.prepare("SELECT id FROM document WHERE number=:ID");
-    docIDQuery.bindValue(":ID", docNewRecord.value("number"));
+    docIDQuery.bindValue(":ID", ui->documentID->text());
     docIDQuery.exec();
+    docIDQuery.first();
 
     if(docIDQuery.size() != 1)
     {
@@ -282,6 +286,10 @@ void AddToStore::accept()
 
         return ;
     }
+
+    /*
+     * Dokument dodany do bazy danych. Można dodać produkty.
+     */
 
     //Dodaj produkty do bazy danych
     for(int i=0; i<rows; ++i)
@@ -296,6 +304,15 @@ void AddToStore::accept()
         productNewRecord.setValue("quantity", quantity);
         productNewRecord.setValue("date", QDateTime(QDateTime::currentDateTime()));
         productNewRecord.setValue("document", docIDQuery.value(0).toInt());
+
+        if(storeTableModel->insertRecord(-1, productNewRecord) != true)
+        {
+            //Zapis do bazy danych sie nie udal
+            qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::storeTableName();
+            qDebug() << productNewRecord;
+
+            return;
+        }
     }
 
     storeTableModel->submitAll();

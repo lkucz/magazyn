@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     productListWindow = 0;
     prepareWorkWindow = 0;
     addToStoreWindow = 0;
+    storeListWindow = 0;
 
     productionWindow = 0;
 }
@@ -58,6 +59,8 @@ MainWindow::~MainWindow()
     if(productListWindow) delete productListWindow;
     if(prepareWorkWindow) delete prepareWorkWindow;
     if(addToStoreWindow) delete addToStoreWindow;
+
+    if(storeListWindow) delete storeListWindow;
 
     if(productionWindow) delete productionWindow;
 
@@ -204,4 +207,14 @@ void MainWindow::openWorkListWindow()
     }
     productionWindow->show();
 
+}
+
+void MainWindow::openStoreListWindow()
+{
+    if(!storeListWindow){
+        storeListWindow = new StoreList(this);
+        storeListWindow->setDB(db);
+        storeListWindow->setWindowTitle("Stan magazynu");
+    }
+    storeListWindow->show();
 }

@@ -13,6 +13,7 @@
 #include "preparework.h"
 #include "addtostore.h"
 #include "production.h"
+#include "storelist.h"
 
 namespace Ui {
 class MainWindow;
@@ -45,6 +46,7 @@ private:
     ProductList *productListWindow;
     PrepareWork *prepareWorkWindow;
     AddToStore *addToStoreWindow;
+    StoreList *storeListWindow;
 
     Production *productionWindow; //Test
 
@@ -62,6 +64,7 @@ private slots:
     void openPrepareWorkWindow();
     void openAddToStoreWindow();
     void openWorkListWindow();
+    void openStoreListWindow();
 };
 
 #endif // MAINWINDOW_H
