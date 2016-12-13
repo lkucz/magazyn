@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     worker.cpp \
     preparework.cpp \
     addtostore.cpp \
-    storelist.cpp
+    storelist.cpp \
+    colordelegate.cpp
 
 HEADERS  += mainwindow.h \
     dictionary.h \
@@ -41,7 +42,8 @@ HEADERS  += mainwindow.h \
     worker.h \
     preparework.h \
     addtostore.h \
-    storelist.h
+    storelist.h \
+    colordelegate.h
 
 FORMS    += mainwindow.ui \
     dictionary.ui \
