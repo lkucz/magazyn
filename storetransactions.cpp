@@ -1,6 +1,3 @@
-#include <QDebug>
-#include <QMessageBox>
-#include <QModelIndexList>
 #include <QModelIndex>
 #include <QSqlRecord>
 #include <QDateTime>
@@ -8,31 +5,27 @@
 #include <QSqlError>
 #include <QMap>
 
-#include "colordelegate.h"
-#include "storelist.h"
-#include "ui_storelist.h"
 #include "settings.h"
+#include "storetransactions.h"
+#include "ui_storetransactions.h"
 
-StoreList::StoreList(QWidget *parent) :
+StoreTransactions::StoreTransactions(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::StoreList)
+    ui(new Ui::StoreTransactions)
 {
     ui->setupUi(this);
 
     tableModel = 0;         //Ustaw wskaznik na model SQL na 0
-
-    //Ustaw obiekt typu delegate, żeby kolorować wiersze
-    ui->tableView->setItemDelegate(new ColorDelegate(ui->tableView));
 }
 
-StoreList::~StoreList()
+StoreTransactions::~StoreTransactions()
 {
     if(tableModel) delete tableModel;
 
     delete ui;
 }
 
-void StoreList::setDB(const QSqlDatabase &db)
+void StoreTransactions::setDB(const QSqlDatabase &db)
 {
     this->db = db;
 
@@ -65,47 +58,4 @@ void StoreList::setDB(const QSqlDatabase &db)
     ui->tableView->setColumnWidth(5, (int)w);
     ui->tableView->setColumnWidth(6, (int)w);
     ui->tableView->setColumnWidth(7, (int)w*3.2);
-}
-
-void StoreList::show()
-{
-    QMap<int, QColor> colorMap;
-
-    // Wykonaj zapytanie przed otwarciem okna
-    if(tableModel) tableModel->select();
-
-    // Pobierz ilość elementów w tableli
-    int rowCount = tableModel->rowCount();
-    if(rowCount > 0)
-    {
-        int qtyFI = tableModel->fieldIndex("qty");
-        int minFI = tableModel->fieldIndex("alarm_min");
-        int maxFI = tableModel->fieldIndex("alarm_max");
-
-        for(int i=0; i<rowCount; ++i)
-        {
-            QModelIndex qty = tableModel->index(i, qtyFI);
-            QModelIndex min = tableModel->index(i, minFI);
-            QModelIndex max = tableModel->index(i, maxFI);
-
-            //Sprawdz czy nie są przekroczone alarmy
-            if(qty.data().toFloat() < min.data().toFloat() || qty.data().toFloat() > max.data().toFloat())
-            {
-             colorMap.insert(i, QColor(Qt::red));
-            }
-        }
-    }
-    (static_cast<ColorDelegate *> (ui->tableView->itemDelegate()))->setColorMap(colorMap);
-
-    QDialog::show();
-}
-
-void StoreList::accept()
-{
-    this->hide();
-}
-
-void StoreList::reject()
-{
-    this->hide();
 }
