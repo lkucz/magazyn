@@ -40,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
     prepareWorkWindow = 0;
     addToStoreWindow = 0;
     storeListWindow = 0;
+    storeTransactionWindow = 0;
+    documentListWindow = 0;
 
     productionWindow = 0;
 }
@@ -61,6 +63,8 @@ MainWindow::~MainWindow()
     if(addToStoreWindow) delete addToStoreWindow;
 
     if(storeListWindow) delete storeListWindow;
+    if(storeTransactionWindow) delete storeTransactionWindow;
+    if(documentListWindow) delete documentListWindow;
 
     if(productionWindow) delete productionWindow;
 
@@ -217,4 +221,24 @@ void MainWindow::openStoreListWindow()
         storeListWindow->setWindowTitle("Stan magazynu");
     }
     storeListWindow->show();
+}
+
+void MainWindow::openStoreTransWindow()
+{
+    if(!storeTransactionWindow){
+        storeTransactionWindow = new StoreTransactions(this);
+        storeTransactionWindow->setDB(db);
+        storeTransactionWindow->setWindowTitle("Transakcje na magazynie");
+    }
+    storeTransactionWindow->show();
+}
+
+void MainWindow::openDocumentListWindow()
+{
+    if(!documentListWindow){
+        documentListWindow = new Documents(this);
+        documentListWindow->setDB(db);
+        documentListWindow->setWindowTitle("Lista dokumentów");
+    }
+    documentListWindow->show();
 }

@@ -2,6 +2,7 @@
 #define DOCUMENTS_H
 
 #include <QDialog>
+#include <QSqlTableModel>
 
 namespace Ui {
 class Documents;
@@ -15,8 +16,13 @@ public:
     explicit Documents(QWidget *parent = 0);
     ~Documents();
 
+    void setDB(const QSqlDatabase &db);
+
 private:
     Ui::Documents *ui;
+
+    QSqlDatabase db;
+    QSqlTableModel *tableModel;
 };
 
 #endif // DOCUMENTS_H

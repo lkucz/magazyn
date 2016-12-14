@@ -304,6 +304,7 @@ void AddToStore::accept()
         productNewRecord.setValue("quantity", quantity);
         productNewRecord.setValue("date", QDateTime(QDateTime::currentDateTime()));
         productNewRecord.setValue("document", docIDQuery.value(0).toInt());
+        productNewRecord.setValue("user", 0);
 
         if(storeTableModel->insertRecord(-1, productNewRecord) != true)
         {

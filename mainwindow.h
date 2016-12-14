@@ -14,6 +14,9 @@
 #include "addtostore.h"
 #include "production.h"
 #include "storelist.h"
+#include "documents.h"
+#include "storetransactions.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -47,6 +50,8 @@ private:
     PrepareWork *prepareWorkWindow;
     AddToStore *addToStoreWindow;
     StoreList *storeListWindow;
+    StoreTransactions *storeTransactionWindow;
+    Documents *documentListWindow;
 
     Production *productionWindow; //Test
 
@@ -65,6 +70,8 @@ private slots:
     void openAddToStoreWindow();
     void openWorkListWindow();
     void openStoreListWindow();
+    void openDocumentListWindow();
+    void openStoreTransWindow();
 };
 
 #endif // MAINWINDOW_H

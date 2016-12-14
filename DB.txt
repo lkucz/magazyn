@@ -64,6 +64,7 @@ INSERT INTO productDict VALUES ('0', NULL);
 INSERT INTO typeDict VALUES ('0', NULL);
 INSERT INTO unitDict VALUES ('0', NULL);
 INSERT INTO stateDict VALUES ('0', NULL);
+INSERT INTO user VALUES ('0', 'Default', NULL);
 
 create table product (
     id int not null auto_increment unique primary key,
@@ -123,15 +124,17 @@ CREATE TABLE store (
 	quantity FLOAT NOT NULL, 
 	date DATETIME NOT NULL, 
 	document INT NOT NULL, 
+        user INT NOT NULL,
         FOREIGN KEY (product) REFERENCES product(id) ON DELETE CASCADE,
-        FOREIGN KEY (document) REFERENCES document(id) ON DELETE CASCADE
+        FOREIGN KEY (document) REFERENCES document(id) ON DELETE CASCADE,
+        FOREIGN KEY (user) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE VIEW storeCount AS
     SELECT
-        store.product AS product,
-        SUM(store.quantity) AS qty
-    FROM store GROUP BY store.product;
+        product AS product,
+        SUM(quantity) AS qty
+    FROM store GROUP BY product;
 
 CREATE VIEW storeQty AS
   SELECT
@@ -154,6 +157,22 @@ INNER JOIN finishDict ON finishDict.id = product.finish
 INNER JOIN colorDict ON colorDict.id = product.color
 INNER JOIN unitDict ON unitDict.id = product.unit
 INNER JOIN storeCount ON storeCount.product = product.id;
+
+
+CREATE VIEW storeTransaction AS
+  SELECT
+    store.id,
+    store.product,
+    product.symbol,
+    store.quantity,
+    store.date,
+    document.number,
+    user.name
+FROM store
+INNER JOIN product ON product.id = store.product
+INNER JOIN document ON document.id = store.document
+INNER JOIN user ON user.id = store.user;
+
 
 CREATE TABLE user (
 	id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 

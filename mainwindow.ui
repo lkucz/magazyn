@@ -58,11 +58,13 @@
     </property>
     <addaction name="actionAddToStore"/>
     <addaction name="actionStoreReport"/>
+    <addaction name="actionStoreTrans"/>
    </widget>
    <widget class="QMenu" name="menuDokumenty">
     <property name="title">
      <string>Do&amp;kumenty</string>
     </property>
+    <addaction name="actionDocumentList"/>
    </widget>
    <addaction name="menuDict"/>
    <addaction name="menuTmp"/>
@@ -149,6 +151,16 @@
   <action name="actionStoreReport">
    <property name="text">
     <string>&amp;Stan magazynu</string>
+   </property>
+  </action>
+  <action name="actionStoreTrans">
+   <property name="text">
+    <string>Operacje na magazynie</string>
+   </property>
+  </action>
+  <action name="actionDocumentList">
+   <property name="text">
+    <string>Lista dokumentów</string>
    </property>
   </action>
  </widget>
@@ -379,6 +391,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDocumentList</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openDocumentListWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStoreTrans</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>openStoreTransWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>openProductDictWindow()</slot>
@@ -395,5 +439,7 @@
   <slot>openAddToStoreWindow()</slot>
   <slot>openWorkListWindow()</slot>
   <slot>openStoreListWindow()</slot>
+  <slot>openStoreTransWindow()</slot>
+  <slot>openDocumentListWindow()</slot>
  </slots>
 </ui>
