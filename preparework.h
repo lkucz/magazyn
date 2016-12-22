@@ -7,6 +7,8 @@
 #include <QString>
 #include <QModelIndex>
 #include <QList>
+#include <QMap>
+#include "storelist.h"
 #include "productlist.h"
 
 namespace Ui {
@@ -16,6 +18,12 @@ class PrepareWork;
 class PrepareWork : public QDialog
 {
     Q_OBJECT
+
+    struct Prod
+    {
+        int   id;
+        float qty;
+    };
 
 public:
     explicit PrepareWork(QWidget *parent = 0);
@@ -30,9 +38,9 @@ private:
     QSqlTableModel *productList;
     QSqlDatabase db;
     QStandardItemModel *tableModel;
-    QList<QModelIndexList> products;
+    QList<Prod> products;
 
-    ProductList *productListWindow;
+    StoreList *storeListWindow;
 
 private slots:
     void addProduct();
@@ -40,7 +48,7 @@ private slots:
     void dataSelected(QModelIndexList );
     void accept();
     void reject();
-
+    void genIDstateChanged(int);
 };
 
 #endif // PREPAREWORK_H

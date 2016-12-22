@@ -17,6 +17,7 @@ public:
     ~Documents();
 
     void setDB(const QSqlDatabase &db);
+    void show();
 
 private:
     Ui::Documents *ui;

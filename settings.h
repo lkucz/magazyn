@@ -23,6 +23,10 @@ public:
     static QString documentTableName();
     static QString storeTableName();
     static QString storeQtyTableName();
+    static QString storeTransTableName();
+    static QString documentListTableName();
+
+    static int workDocumentID();
 };
 
 #endif // SETTINGS_H

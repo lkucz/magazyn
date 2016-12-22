@@ -19,10 +19,10 @@ StoreList::StoreList(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    tableModel = 0;         //Ustaw wskaznik na model SQL na 0
-
     //Ustaw obiekt typu delegate, żeby kolorować wiersze
     ui->tableView->setItemDelegate(new ColorDelegate(ui->tableView));
+
+    tableModel = 0;         //Ustaw wskaznik na model SQL na 0
 }
 
 StoreList::~StoreList()
@@ -102,10 +102,23 @@ void StoreList::show()
 
 void StoreList::accept()
 {
+    QModelIndexList list = ui->tableView->selectionModel()->selectedIndexes();
+    if(!list.empty())
+    {
+        emit dataSelected(list);
+    }
+
     this->hide();
 }
 
 void StoreList::reject()
 {
+    this->hide();
+}
+
+void StoreList::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    QModelIndexList list = ui->tableView->selectionModel()->selectedIndexes();
+    emit dataSelected(list);
     this->hide();
 }

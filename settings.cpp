@@ -63,10 +63,22 @@ QString Settings::documentTableName()
 
 QString Settings::storeTableName()
 {
-    return QString("store");
+    return QString("store");            //główna tabela magazynu (wszystkie ruchy magazynu)
 }
 
 QString Settings::storeQtyTableName()
 {
-    return QString("storeQty");
+    return QString("storeQty");         //view z tabeli z podliczoną liczbą produktów (jeden produkt == jeden wpis)
 }
+
+QString Settings::storeTransTableName()
+{
+    return QString("storeTransaction"); //view z transakcjami na magazynie
+}
+
+QString Settings::documentListTableName()
+{
+    return QString("documentList");     // tabela z dokumentami
+}
+
+int Settings::workDocumentID(){ return 5; }         // Numer ID dokumentu. Potrzebny przy przygotowaniu/wydawaniu/odbieraniu prac !!! ZAKODOWANY NA SZTYWNO !!!

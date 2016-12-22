@@ -17,6 +17,7 @@ public:
     ~StoreTransactions();
 
     void setDB(const QSqlDatabase &db);
+    void show();
 
 private:
     Ui::StoreTransactions *ui;
