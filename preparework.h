@@ -36,6 +36,9 @@ private:
     Ui::PrepareWork *ui;
 
     QSqlTableModel *productList;
+    QSqlTableModel *documentTableModel;
+    QSqlTableModel *storeTableModel;
+    QSqlTableModel *productionTableModel;
     QSqlDatabase db;
     QStandardItemModel *tableModel;
     QList<Prod> products;

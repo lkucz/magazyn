@@ -78,7 +78,22 @@ QString Settings::storeTransTableName()
 
 QString Settings::documentListTableName()
 {
-    return QString("documentList");     // tabela z dokumentami
+    return QString("documentList");     // tabela z dokumentami -- wszytkie wprowadzone dokumenty (główna tabela z dokumentami)
 }
 
+QString Settings::productionTableName()
+{
+    return QString("production");     // tabela z produkcją -- główna tabela produkcji (prace przygotoweane, wydane, zakończone , anulowan)
+}
+
+
 int Settings::workDocumentID(){ return 5; }         // Numer ID dokumentu. Potrzebny przy przygotowaniu/wydawaniu/odbieraniu prac !!! ZAKODOWANY NA SZTYWNO !!!
+int Settings::defaultWorkerID(){ return 0; }         // Numer ID pracownika domyślnego. Potrzebne przy przygotowaniu prac bez wydawania  !!! ZAKODOWANY NA SZTYWNO !!!
+int Settings::defaultUserID(){ return 0; }         // Numer ID użytkownika systemu !!! ZAKODOWANY NA SZTYWNO !!!
+
+int Settings::workDefaultStateID(){ return 0; }
+int Settings::workOnStock(){ return 1; }
+int Settings::workAtProduction(){ return 2; }
+int Settings::workReady(){ return 3; }
+int Settings::workCanceled(){ return 4; }
+int Settings::workReturned(){ return 5; }

@@ -132,6 +132,9 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">

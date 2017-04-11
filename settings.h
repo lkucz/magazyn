@@ -25,8 +25,18 @@ public:
     static QString storeQtyTableName();
     static QString storeTransTableName();
     static QString documentListTableName();
+    static QString productionTableName();
 
     static int workDocumentID();
+    static int defaultWorkerID();
+    static int defaultUserID();
+
+    static int workDefaultStateID();
+    static int workOnStock();
+    static int workAtProduction();
+    static int workReady();
+    static int workCanceled();
+    static int workReturned();
 };
 
 #endif // SETTINGS_H

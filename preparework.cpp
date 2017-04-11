@@ -7,6 +7,7 @@
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QUuid>
+#include <QDateTime>
 #include "storelist.h"
 #include "productlist.h"
 #include "preparework.h"
@@ -19,9 +20,14 @@ PrepareWork::PrepareWork(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    productList = 0;              //SQLModel do tabeli z produktami -- typy produkow finalnych dla ComboBox
+    productList = 0;             //SQLModel do tabeli z produktami -- typy produkow finalnych dla ComboBox
     storeListWindow = 0;         //Okno z lista produktów dostepnych na magazynie
     tableModel = 0;              //Model dla wigdety tableView (lista produktow do dodania)
+
+    documentTableModel = 0;      //Model dla tabeli dokumentów w bazie danych
+    storeTableModel = 0;         //Model dla tabeli magazynu w bazie danych
+    productionTableModel = 0;    //Model dla tabeli produkcji w bazie danych
+
 }
 
 PrepareWork::~PrepareWork()
@@ -29,6 +35,10 @@ PrepareWork::~PrepareWork()
     if(productList) delete productList;                 //Usuń zaalokowane obiekty
     if(storeListWindow) delete storeListWindow;
     if(tableModel) delete tableModel;
+
+    if(documentTableModel) delete documentTableModel;
+    if(storeTableModel) delete storeTableModel;
+    if(productionTableModel) delete productionTableModel;
 
     delete ui;
 }
@@ -44,6 +54,33 @@ void PrepareWork::setDB(const QSqlDatabase &db)
     productList->setEditStrategy(QSqlTableModel::OnManualSubmit);
     productList->setSort(1, Qt::AscendingOrder);
     productList->select();
+
+    // Inicjalizacja tabeli z dokumentami
+    if(documentTableModel) delete documentTableModel;
+
+    documentTableModel = new QSqlTableModel(0, db);
+    documentTableModel->setTable(Settings::documentTableName());
+    documentTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    documentTableModel->setSort(1, Qt::AscendingOrder);
+    documentTableModel->select();
+
+    // Inicjalizacja tabeli ze stanami magazynu
+    if(storeTableModel) delete storeTableModel;
+
+    storeTableModel = new QSqlTableModel(0, db);
+    storeTableModel->setTable(Settings::storeTableName());
+    storeTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    storeTableModel->setSort(1, Qt::AscendingOrder);
+    storeTableModel->select();
+
+    // Inicjalizacja tabeli z produkcją
+    if(productionTableModel) delete productionTableModel;
+
+    productionTableModel = new QSqlTableModel(0, db);
+    productionTableModel->setTable(Settings::productionTableName());
+    productionTableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    productionTableModel->setSort(1, Qt::AscendingOrder);
+    productionTableModel->select();
 
     ui->finalProductCB->setModel(productList);
     ui->finalProductCB->setModelColumn(1);
@@ -195,13 +232,159 @@ void PrepareWork::accept()
     }
 
     //Sprawdz w bazie SQL czy numer pracy istnieje
-    QSqlQuery docIDQuery(this->db);
-    docIDQuery.prepare("SELECT id FROM document WHERE number=:ID and type=:DocID");
-    docIDQuery.bindValue(":ID", ui->workIDLineEdit->text());
-    docIDQuery.bindValue(":DocID", Settings::workDocumentID());
-    docIDQuery.exec();
+    QSqlQuery docNumberQuery(this->db);
+    docNumberQuery.prepare("SELECT id FROM document WHERE number=:ID and type=:DocID");
+    docNumberQuery.bindValue(":ID", ui->workIDLineEdit->text());
+    docNumberQuery.bindValue(":DocID", Settings::workDocumentID());
+    docNumberQuery.exec();
 
-    qDebug() << docIDQuery.first();
+    if(docNumberQuery.first() == true)
+    {
+        mb.setText("Dokument o podanum numerze już istnieje w bazie danych !!!");
+        mb.exec();
+
+        return;
+    }
+
+    //Walidacja listy produktów wchodzących w skład pracy
+    rows = tableModel->rowCount();
+
+    //Lista pprppduktów jest pusta
+    if(rows == 0)
+    {
+        mb.setText("Tabela nie zawiera produktów.");
+        mb.exec();
+
+        return ;
+    }
+
+    for(int i=0; i<rows; ++i)
+    {
+        QModelIndex index = tableModel->index(i, 2); //Kolumna z ilością produktów
+        if(tableModel->data(index).toFloat() <= 0)
+        {
+            mb.setText("Przynajmniej jeden z produków w tabeli zawiera zerową ilość.");
+            mb.exec();
+
+            return;
+        }
+
+        if(tableModel->data(index).toFloat() > products[i].qty )
+        {
+
+            mb.setText("Przynajmniej jeden z produków w tabeli zawiera ilość większą niż dostępna na magazynie.");
+            mb.exec();
+
+            return;
+        }
+    }
+
+
+
+    /*
+     *  Walidcja zakończona pozytywnie. Można dodać elementy do bazy danych
+     */
+
+    //Dodaj dokument do bazy danych
+    QSqlRecord docNewRecord;
+
+    docNewRecord = documentTableModel->record();
+    docNewRecord.setGenerated("id", true);
+    docNewRecord.setValue("number", ui->workIDLineEdit->text());             //numer dokumentu
+    docNewRecord.setValue("date", QVariant(QDate::currentDate()));           //dzisiejsza data
+    docNewRecord.setValue("type", QVariant(Settings::workDocumentID()));     //typ dokumentu
+
+    if(documentTableModel->insertRecord(-1, docNewRecord) != true)
+    {
+        //Zapis do bazy danych sie nie udal
+        qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::documentTableName();
+        qDebug() << docNewRecord;
+
+        return;
+    }
+
+    //Prześlij zaminy do bazy danych
+    documentTableModel->submitAll();
+
+    //Pobierz numer id dla nowego dokumentu
+    QSqlQuery docIDQuery(this->db);
+    docIDQuery.prepare("SELECT id FROM document WHERE number=:ID");
+    docIDQuery.bindValue(":ID", ui->workIDLineEdit->text());
+    docIDQuery.exec();
+    docIDQuery.first();
+
+    if(docIDQuery.size() != 1)
+    {
+        qDebug() << "Problem z wynikiem zapytania do bazy danych";
+        qDebug() << "Wynik zapytania do bazy wskazuje, że jest więcej dokumentów o tym samym numerze!";
+        qDebug() << "nr dokumentu" << ui->workIDLineEdit->text();
+        qDebug() << "docIDQuery.size() " << docIDQuery.size();
+
+        return ;
+    }
+
+    /*
+     * Dokument dodany do bazy danych. Można usunąć produkty z magazunu.
+     */
+
+    //Usuń produkty do bazy danych
+    for(int i=0; i<rows; ++i)
+    {
+        QModelIndex index = tableModel->index(i, 2);  //Kolumna w view zawierająca ilość == 2
+        float quantity = tableModel->data(index).toFloat() * -1;    //Wartość musi być ujemna, żeby ściągnąć ze stanu
+
+        QSqlRecord productNewRecord;
+        productNewRecord = storeTableModel->record();
+        productNewRecord.setGenerated("id", true);
+        productNewRecord.setValue("product", products[i].id);
+        productNewRecord.setValue("quantity", quantity);
+        productNewRecord.setValue("date", QDateTime::currentDateTime());
+        productNewRecord.setValue("document", docIDQuery.value(0).toInt());
+        productNewRecord.setValue("user", Settings::defaultUserID());
+
+        if(storeTableModel->insertRecord(-1, productNewRecord) != true)
+        {
+            //Zapis do bazy danych sie nie udal
+            qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::storeTableName();
+            qDebug() << productNewRecord;
+
+            return;
+        }
+    }
+
+    storeTableModel->submitAll();
+
+    /*
+     *  Dodaj dokument do tabeli produkcja
+     */
+
+    QSqlRecord productionNewRectord;
+    int r=0, c=0;
+
+    productionNewRectord = productionTableModel->record();
+    productionNewRectord.setGenerated("id", true);
+    productionNewRectord.setValue("document", docIDQuery.value(0).toInt()); //ID dokumentu dodanego do tabeli dokumentów
+    productionNewRectord.setValue("worker", QVariant(Settings::defaultWorkerID()));
+    productionNewRectord.setValue("date", QDateTime::currentDateTime());
+    productionNewRectord.setValue("state", Settings::workOnStock());
+    productionNewRectord.setValue("qty_in", ui->qtyLineEdit->text().toFloat());
+    productionNewRectord.setValue("qty_out", 0);
+
+    r = ui->finalProductCB->currentIndex(); //Pobierz index z ComboBox -- typ produktu końcowego
+    productionNewRectord.setValue("product", QVariant(productList->index(r, c).data())); // c - kolumna ustawiona na 0 (ID produktu)
+    productionNewRectord.setValue("user", Settings::defaultUserID());
+
+    if(productionTableModel->insertRecord(-1, productionNewRectord) != true)
+    {
+        //Zapis do bazy danych sie nie udal
+        qDebug() << "Problem z wstawieniem rekordu do tabeli " << Settings::documentTableName();
+        qDebug() << productionNewRectord;
+
+        return;
+    }
+
+    //Prześlij zaminy do bazy danych
+    productionTableModel->submitAll();
 
     this->hide();
 }

@@ -256,7 +256,7 @@ void AddToStore::accept()
     docNewRecord = documentTableModel->record();
     docNewRecord.setGenerated("id", true);
     docNewRecord.setValue("number", ui->documentID->text());
-    docNewRecord.setValue("date", QVariant(ui->dateEdit->text()));
+    docNewRecord.setValue("date", QVariant(ui->dateEdit->date()));
     r = ui->documentType->currentIndex();   // Pobierz index z ComboBox - rodzaj dokumentu
     docNewRecord.setValue("type", QVariant(docTypeTableModel->index(r, c).data()));   // c-kolumna ustawiona na 0, w każdej tabeli pole ID==0
 

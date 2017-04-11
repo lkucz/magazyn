@@ -303,10 +303,18 @@ INSERT INTO `unitDict` (`id`, `name`) VALUES
 INSERT INTO `user` (`id`, `name`, `password`) VALUES
 (1, 'Lukasz K', NULL);
 
+
+SET SESSION SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+INSERT INTO worker VALUES ('0', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `worker` (`id`, `name`, `surname`, `address`, `city`, `phone`) VALUES
 (1, 'Jan', 'Kowalski', NULL, NULL, '111111'),
 (2, 'Janina', 'Kowalska', NULL, NULL, '222222');
 
+INSERT INTO stateDict VALUES(1, 'magazyn');
+INSERT INTO stateDict VALUES(2, 'produkcja');
+INSERT INTO stateDict VALUES(3, 'gotowe');
+INSERT INTO stateDict VALUES(4, 'anulowane');
+INSERT INTO stateDict VALUES(5, 'zwrocone');
 
 
 ###############
