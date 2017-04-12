@@ -2,7 +2,7 @@
 #define PRODUCTION_H
 
 #include <QDialog>
-#include <QSqlDatabase>
+#include <QSqlTableModel>
 
 namespace Ui {
 class Production;
@@ -23,10 +23,13 @@ private:
     Ui::Production *ui;
 
     QSqlDatabase db;
+    QSqlTableModel *tableModel;
+
 
 private slots:
     void accept();
     void reject();
+    void on_tableView_doubleClicked(const QModelIndex &index);
 };
 
 #endif // PRODUCTION_H

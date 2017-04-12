@@ -26,6 +26,8 @@ public:
     static QString storeTransTableName();
     static QString documentListTableName();
     static QString productionTableName();
+    static QString productionListTableName();
+    static QString workerListTableName();
 
     static int workDocumentID();
     static int defaultWorkerID();

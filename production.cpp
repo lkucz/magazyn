@@ -9,26 +9,56 @@
 
 #include "production.h"
 #include "ui_production.h"
+#include "settings.h"
 
 Production::Production(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Production)
 {
     ui->setupUi(this);
+
+    tableModel = 0;         //Table model dla widgetu z listą prac
+
 }
 
 Production::~Production()
 {
+    if(tableModel) delete tableModel;
+
     delete ui;
 }
 
 void Production::setDB(const QSqlDatabase &db)
 {
     this->db = db;
+
+    if(tableModel) delete tableModel;           //Usun wskaznik jezeli zostal wczesniej zainnicjalizowany
+    tableModel = new QSqlTableModel(0, db);
+
+    tableModel->setTable(Settings::productionListTableName());
+    tableModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    tableModel->setSort(1, Qt::AscendingOrder);
+    tableModel->select();
+
+    //Zmień nazwy kolumnn
+    tableModel->setHeaderData(1, Qt::Horizontal, tr("Numer pracy"));
+    tableModel->setHeaderData(2, Qt::Horizontal, tr("Stan"));
+    tableModel->setHeaderData(3, Qt::Horizontal, tr("Pracownik"));
+
+    ui->tableView->setModel(tableModel);
+    ui->tableView->setColumnHidden(0, true);
+
+    //Przelicz szerokosc kolumn
+    float w = ui->tableView->width()/3;
+    ui->tableView->setColumnWidth(1, (int)w*0.9);
+    ui->tableView->setColumnWidth(2, (int)w*0.9);
+    ui->tableView->setColumnWidth(3, (int)w*0.9);
+
 }
 
 void Production::show()
 {
+    if(tableModel) tableModel->select();
     QDialog::show();
 }
 
@@ -40,4 +70,9 @@ void Production::accept()
 void Production::reject()
 {
     this->hide();
+}
+
+void Production::on_tableView_doubleClicked(const QModelIndex &index)
+{
+
 }

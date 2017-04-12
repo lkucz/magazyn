@@ -204,7 +204,7 @@ CREATE TABLE user (
 	password VARCHAR(255)
 );
 
-CREATE VIEW worker_view
+CREATE VIEW workerList
 AS SELECT
     concat_ws(' ', name, surname) AS name,
     concat_ws(' ', address, city) AS address,
@@ -237,7 +237,16 @@ CREATE TABLE production (
 	FOREIGN KEY (user) REFERENCES user(id) ON DELETE CASCADE 	
 );
 
-
+CREATE VIEW productionList AS
+  SELECT
+    production.id,
+    document.number,
+    stateDict.name,
+    concat_ws(' ', worker.name, worker.surname) AS worker
+   FROM production
+   INNER JOIN stateDict ON stateDict.id = production.state
+   INNER JOIN document ON document.id = production.document
+   INNER JOIN worker ON worker.id = production.worker;
 
 INSERT INTO `colorDict` (`id`, `name`) VALUES
 (0, NULL),
@@ -364,3 +373,10 @@ INNER JOIN typeDict ON typeDict.id = products.type
 INNER JOIN materialDict ON materialDict.id = products.material
 INNER JOIN finishDict ON finishDict.id = products.finish
 INNER JOIN colorDict ON colorDict.id = products.color;
+
+CREATE VIEW worker_view
+AS SELECT
+    concat_ws(' ', name, surname) AS name,
+    concat_ws(' ', address, city) AS address,
+    phone
+FROM worker;

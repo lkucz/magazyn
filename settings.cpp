@@ -87,6 +87,18 @@ QString Settings::productionTableName()
 }
 
 
+QString Settings::productionListTableName()
+{
+    return QString("productionList");     // tabela z produkcją(view) id, numer pracy, stan, pracownik
+}
+
+QString Settings::workerListTableName()
+{
+    return QString("workerList");     // tabela z listą pracowników (view)
+}
+
+
+
 int Settings::workDocumentID(){ return 5; }         // Numer ID dokumentu. Potrzebny przy przygotowaniu/wydawaniu/odbieraniu prac !!! ZAKODOWANY NA SZTYWNO !!!
 int Settings::defaultWorkerID(){ return 0; }         // Numer ID pracownika domyślnego. Potrzebne przy przygotowaniu prac bez wydawania  !!! ZAKODOWANY NA SZTYWNO !!!
 int Settings::defaultUserID(){ return 0; }         // Numer ID użytkownika systemu !!! ZAKODOWANY NA SZTYWNO !!!

@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     addtostore.cpp \
     storelist.cpp \
     colordelegate.cpp \
-    storetransactions.cpp
+    storetransactions.cpp \
+    work.cpp
 
 HEADERS  += mainwindow.h \
     dictionary.h \
@@ -45,7 +46,8 @@ HEADERS  += mainwindow.h \
     addtostore.h \
     storelist.h \
     colordelegate.h \
-    storetransactions.h
+    storetransactions.h \
+    work.h
 
 FORMS    += mainwindow.ui \
     dictionary.ui \
@@ -60,7 +62,8 @@ FORMS    += mainwindow.ui \
     preparework.ui \
     addtostore.ui \
     storelist.ui \
-    storetransactions.ui
+    storetransactions.ui \
+    work.ui
 
 QTPLUGIN += QSQLMYSQL
 

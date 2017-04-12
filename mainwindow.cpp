@@ -207,7 +207,7 @@ void MainWindow::openWorkListWindow()
     if(!productionWindow){
         productionWindow = new Production(this);
         productionWindow->setDB(db);
-        productionWindow->setWindowTitle("TEST");
+        productionWindow->setWindowTitle("Lista prac");
     }
     productionWindow->show();
 
