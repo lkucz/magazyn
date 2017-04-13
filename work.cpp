@@ -129,6 +129,7 @@ void Work::accept()
         }
     }
 
+    workDetailsTableModel->submitAll();
 }
 
 void Work::reject()
