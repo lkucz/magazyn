@@ -190,13 +190,14 @@ CREATE VIEW storeTransaction AS
     store.quantity,
     store.date,
     document.number,
-    user.name AS user
+    user.name AS user,
+    unitDict.name as unit
 FROM store
 INNER JOIN product ON product.id = store.product
 INNER JOIN document ON document.id = store.document
 INNER JOIN user ON user.id = store.user
-INNER JOIN productName ON productName.id = store.product;
-
+INNER JOIN productName ON productName.id = store.product
+INNER JOIN unitDict ON unitDict.id = product.unit;
 
 CREATE TABLE user (
 	id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY, 
@@ -206,6 +207,7 @@ CREATE TABLE user (
 
 CREATE VIEW workerList
 AS SELECT
+    id,
     concat_ws(' ', name, surname) AS name,
     concat_ws(' ', address, city) AS address,
     phone
@@ -242,7 +244,8 @@ CREATE VIEW productionList AS
     production.id,
     document.number,
     stateDict.name,
-    concat_ws(' ', worker.name, worker.surname) AS worker
+    concat_ws(' ', worker.name, worker.surname) AS worker,
+    production.worker AS workerID
    FROM production
    INNER JOIN stateDict ON stateDict.id = production.state
    INNER JOIN document ON document.id = production.document

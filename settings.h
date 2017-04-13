@@ -39,6 +39,31 @@ public:
     static int workReady();
     static int workCanceled();
     static int workReturned();
+
+    class DB
+    {
+    public:
+
+        class workerListTableName
+        {
+        public:
+            const static int id         = 0;
+            const static int name       = 1;
+            const static int address    = 2;
+            const static int phone      = 3;
+        };
+
+        class productionList
+        {
+        public:
+            const static int id         = 0;
+            const static int number     = 1;
+            const static int state      = 2;
+            const static int worker     = 3;
+            const static int WorkedID   = 4;
+
+        };
+    };
 };
 
 #endif // SETTINGS_H

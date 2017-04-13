@@ -18,12 +18,13 @@ Production::Production(QWidget *parent) :
     ui->setupUi(this);
 
     tableModel = 0;         //Table model dla widgetu z listą prac
-
+    workWindow = 0;         //Ustaw wskaźnik okna z opisem pracy
 }
 
 Production::~Production()
 {
     if(tableModel) delete tableModel;
+    if(workWindow) delete workWindow;
 
     delete ui;
 }
@@ -46,7 +47,8 @@ void Production::setDB(const QSqlDatabase &db)
     tableModel->setHeaderData(3, Qt::Horizontal, tr("Pracownik"));
 
     ui->tableView->setModel(tableModel);
-    ui->tableView->setColumnHidden(0, true);
+    ui->tableView->setColumnHidden(Settings::DB::productionList::id, true);
+    ui->tableView->setColumnHidden(Settings::DB::productionList::WorkedID, true);
 
     //Przelicz szerokosc kolumn
     float w = ui->tableView->width()/3;
@@ -74,5 +76,18 @@ void Production::reject()
 
 void Production::on_tableView_doubleClicked(const QModelIndex &index)
 {
+    // Utwórz obiekt okna, jeżeli nie było jeszcze używane
+    if(!workWindow)
+    {
+        workWindow = new Work(this);
+        workWindow->setWindowTitle("Szczegóły pracy");
+        workWindow->setDB(this->db);
+    }
 
+    //W definicji tabeli w kolumnie nr 1 jest numer pracy
+    int row = index.row();
+    workWindow->setWorkID(QVariant(tableModel->index(row, Settings::DB::productionList::number).data()).toString());
+    workWindow->setWorkerID(QVariant(tableModel->index(row, Settings::DB::productionList::WorkedID).data()).toInt());
+
+    workWindow->show();
 }

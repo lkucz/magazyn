@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QSqlTableModel>
+#include "work.h"
 
 namespace Ui {
 class Production;
@@ -25,6 +26,7 @@ private:
     QSqlDatabase db;
     QSqlTableModel *tableModel;
 
+    Work *workWindow;
 
 private slots:
     void accept();
